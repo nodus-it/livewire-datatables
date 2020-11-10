@@ -7,5 +7,3 @@ _An awesome package for easy dynamic forms with livewire._
 - Responsive diplay breakpoints for columns
 - Advanced scopes
 - Closure support
-- Button fixed parameters
-    - TODO: discuss implemented system

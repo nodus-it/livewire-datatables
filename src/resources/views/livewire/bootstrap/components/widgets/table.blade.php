@@ -26,6 +26,13 @@
                 @include('nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.components.widgets.buttons',['item'=>$result])
             </tr>
         @endforeach
+        @if($results->count() === 0)
+            <tr>
+                <td colspan="{{ count($columns) + (count($buttons) > 0) }}">
+                    @lang('nodus.packages.livewire-datatables::datatable.table.empty')
+                </td>
+            </tr>
+        @endif
         </tbody>
     </table>
 </div>
