@@ -14,6 +14,11 @@ use Illuminate\Support\Arr;
  */
 class Column
 {
+    public const BREAKPOINT_400 = 400;
+    public const BREAKPOINT_600 = 600;
+    public const BREAKPOINT_750 = 750;
+    public const BREAKPOINT_1000 = 1000;
+
     /**
      * Column Identifier
      *
@@ -64,6 +69,13 @@ class Column
     protected string $datatype = 'text';
 
     /**
+     * Breakpoint for column
+     *
+     * @var int
+     */
+    protected int $breakpoint = 0;
+
+    /**
      * Creates an new column object
      *
      * @param string|array $values Values for show
@@ -106,6 +118,16 @@ class Column
     public function enableHtml(bool $html = true)
     {
         $this->html = $html;
+    }
+
+    /**
+     * Set breakpoint for column
+     *
+     * @param int $breakpoint
+     */
+    public function setBreakpoint(int $breakpoint)
+    {
+        $this->breakpoint = $breakpoint;
     }
 
 
@@ -247,6 +269,21 @@ class Column
             default:
                 return $var;
         }
+    }
+
+    /**
+     * Return additional classes for tr and td
+     *
+     * @return string
+     */
+    public function getClasses()
+    {
+        $classes = [];
+        if ($this->breakpoint != 0) {
+            $classes[] = 'breakpoint-' . $this->breakpoint;
+        }
+
+        return implode(' ', $classes);
     }
 
 

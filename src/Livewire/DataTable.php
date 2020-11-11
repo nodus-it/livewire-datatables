@@ -22,6 +22,22 @@ abstract class DataTable extends Component
     use WithPagination;
 
     /**
+     * @var string Column class to use in addColumn method
+     */
+    protected string $columnClass = Column::class;
+
+    /**
+     * @var string Button class to use in addButton method
+     */
+    protected string $buttonClass = Button::class;
+
+    /**
+     * @var string SimpleScope class to use in addSimpleScope method
+     */
+    protected string $simpleScopeClass = SimpleScope::class;
+
+
+    /**
      * Laravel theme for the built-in pagination
      *
      * @var string
@@ -315,7 +331,7 @@ abstract class DataTable extends Component
         if ($label == null) {
             $label = $this->getTranslationStringByModel('fields.' . ((is_array($values)) ? $values[ 0 ] : $values));
         }
-        $column = new Column($values, $label);
+        $column = new $this->columnClass($values, $label);
         $this->columns[ $column->getId() ] = $column;
 
         return $column;
@@ -335,7 +351,7 @@ abstract class DataTable extends Component
             $label = $this->getTranslationStringByModel('scopes.simple.' . $scope);
         }
 
-        $simpleScope = new SimpleScope($scope, $label);
+        $simpleScope = new $this->simpleScopeClass($scope, $label);
 
         $this->simpleScopes[ $simpleScope->getId() ] = $simpleScope;
 
@@ -353,7 +369,7 @@ abstract class DataTable extends Component
      */
     protected function addButton(string $label, string $route, array $routeParameter = [])
     {
-        $button = new Button($label, $route, $routeParameter);
+        $button = new $this->buttonClass($label, $route, $routeParameter);
         $this->buttons[] = $button;
 
         return $button;

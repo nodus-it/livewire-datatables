@@ -2,7 +2,7 @@
     <table class="table table-striped ">
         <thead>
         @foreach($columns as $column)
-            <th class="border-top-0" role="button" wire:click="changeSort('{{$column->getId()}}')">
+            <th class="border-top-0 {{$column->getClasses()}}" role="button" wire:click="changeSort('{{$column->getId()}}')">
                 {{$column->getLabel()}}
                 @include('nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.components.widgets.sorting')
             </th>
@@ -18,9 +18,9 @@
             <tr>
                 @foreach($columns as $column)
                     @if($column->isHtmlEnabled())
-                        <td class="align-middle">{!! $column->getValues($result) !!}</td>
+                        <td class="align-middle {{$column->getClasses()}}">{!! $column->getValues($result) !!}</td>
                     @else
-                        <td class="align-middle">{{ $column->getValues($result)}}</td>
+                        <td class="align-middle {{$column->getClasses()}}">{{ $column->getValues($result)}}</td>
                     @endif
                 @endforeach
                 @include('nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.components.widgets.buttons',['item'=>$result])

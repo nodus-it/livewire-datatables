@@ -12,6 +12,10 @@ use Illuminate\Support\Str;
  */
 class Button
 {
+    const RENDER_MODE_LABEL = 1;
+    const RENDER_MODE_ICON = 2;
+    const RENDER_MODE_ICON_LABEL = 3;
+
     /**
      * Button identifier
      *
@@ -48,6 +52,16 @@ class Button
     protected string $target = '_self';
 
     /**
+     * @var string|null
+     */
+    protected $icon = null;
+
+    /**
+     * @var bool
+     */
+    protected $renderMode = self::RENDER_MODE_LABEL;
+
+    /**
      * Creates an new scope object
      *
      * @param string $label          Scope label
@@ -76,6 +90,21 @@ class Button
         return $this;
     }
 
+    /**
+     * Set an icon for button and choose the render mode
+     *
+     * @param string $icon
+     * @param bool   $showIconOnly
+     */
+    public function setIcon($icon, $showIconOnly = true)
+    {
+        $this->icon = $icon;
+        if ($showIconOnly) {
+            $this->renderMode = self::RENDER_MODE_ICON;
+        } else {
+            $this->renderMode = self::RENDER_MODE_ICON_LABEL;
+        }
+    }
 
     /**
      * Getter for blade
@@ -111,10 +140,10 @@ class Button
     public function getRoute(Model $model)
     {
         $parameter = [];
-        
+
         foreach ($this->routeParameter as $key => $value) {
-            if(Str::startsWith($value,':')) {
-                $parameter[ $key ] = $model->{ltrim($value,':')};
+            if (Str::startsWith($value, ':')) {
+                $parameter[ $key ] = $model->{ltrim($value, ':')};
             } else {
                 $parameter[ $key ] = $value;
             }
@@ -131,5 +160,25 @@ class Button
     public function getTarget()
     {
         return $this->target;
+    }
+
+    /**
+     * Returns the icon if available
+     *
+     * @return string|null
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * Returns the button render mode
+     *
+     * @return int
+     */
+    public function getRenderMode()
+    {
+        return $this->renderMode;
     }
 }
