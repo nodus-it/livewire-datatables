@@ -1,23 +1,30 @@
 <?php
 
-
 namespace Nodus\Packages\LivewireDatatables;
 
-
+/**
+ * Livewire Trait
+ *
+ * @package Nodus\Packages\LivewireDatatables
+ */
 trait Livewire
 {
     /**
-     * @var null|string Default layout name
+     * Default view layout name
+     *
+     * @var string|null
      */
     protected ?string $defaultLayout = null;
 
     /**
-     * @var string|null Default
+     * Default view section
+     *
+     * @var string|null
      */
     protected ?string $defaultSection = null;
 
     /**
-     * Create a new LivewireComponent instance
+     * Creates a new LivewireComponent instance
      *
      * @param string $componentName Livewire component name
      * @param array  $parameter     Livewire component parameter

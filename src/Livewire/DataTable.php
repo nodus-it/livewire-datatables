@@ -22,20 +22,25 @@ abstract class DataTable extends Component
     use WithPagination;
 
     /**
-     * @var string Column class to use in addColumn method
+     * The Column class to be used in the addColumn method
+     *
+     * @var string
      */
     protected string $columnClass = Column::class;
 
     /**
-     * @var string Button class to use in addButton method
+     * The Button class to be used in the addButton method
+     *
+     * @var string
      */
     protected string $buttonClass = Button::class;
 
     /**
-     * @var string SimpleScope class to use in addSimpleScope method
+     * The SimpleScope class to be used in the addSimpleScope method
+     *
+     * @var string
      */
     protected string $simpleScopeClass = SimpleScope::class;
-
 
     /**
      * Laravel theme for the built-in pagination

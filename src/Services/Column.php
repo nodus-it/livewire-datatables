@@ -14,6 +14,9 @@ use Illuminate\Support\Arr;
  */
 class Column
 {
+    /**
+     * Default breakpoint constants
+     */
     public const BREAKPOINT_400 = 400;
     public const BREAKPOINT_600 = 600;
     public const BREAKPOINT_750 = 750;
@@ -69,7 +72,7 @@ class Column
     protected string $datatype = 'text';
 
     /**
-     * Breakpoint for column
+     * Breakpoint for column in px
      *
      * @var int
      */
@@ -91,7 +94,7 @@ class Column
     }
 
     /**
-     * Set the search keys for this column
+     * Sets the search keys for this column
      *
      * @param array|string $keys
      */
@@ -101,7 +104,7 @@ class Column
     }
 
     /**
-     * Set the sort keys for this column
+     * Sets the sort keys for this column
      *
      * @param array|string $keys
      */
@@ -111,7 +114,7 @@ class Column
     }
 
     /**
-     * Set the html flag
+     * Sets the html flag
      *
      * @param bool $html Allow html
      */
@@ -121,7 +124,7 @@ class Column
     }
 
     /**
-     * Set breakpoint for column
+     * Sets the breakpoint for the column
      *
      * @param int $breakpoint
      */
@@ -272,7 +275,7 @@ class Column
     }
 
     /**
-     * Return additional classes for tr and td
+     * Returns additional classes for <th> and <td>
      *
      * @return string
      */

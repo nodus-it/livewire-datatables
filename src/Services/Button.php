@@ -12,9 +12,12 @@ use Illuminate\Support\Str;
  */
 class Button
 {
-    const RENDER_MODE_LABEL = 1;
-    const RENDER_MODE_ICON = 2;
-    const RENDER_MODE_ICON_LABEL = 3;
+    /**
+     * Render mode constants
+     */
+    public const RENDER_MODE_LABEL = 1;
+    public const RENDER_MODE_ICON = 2;
+    public const RENDER_MODE_ICON_LABEL = 3;
 
     /**
      * Button identifier
@@ -52,14 +55,18 @@ class Button
     protected string $target = '_self';
 
     /**
+     * Icon CSS class
+     *
      * @var string|null
      */
-    protected $icon = null;
+    protected ?string $icon = null;
 
     /**
-     * @var bool
+     * Render mode
+     *
+     * @var int
      */
-    protected $renderMode = self::RENDER_MODE_LABEL;
+    protected int $renderMode = self::RENDER_MODE_LABEL;
 
     /**
      * Creates an new scope object
@@ -77,7 +84,7 @@ class Button
     }
 
     /**
-     * Set the target for <a> tag
+     * Sets the target for <a> tag
      *
      * @param string $target Target
      *
@@ -91,12 +98,12 @@ class Button
     }
 
     /**
-     * Set an icon for button and choose the render mode
+     * Sets an icon for button and choose the render mode
      *
      * @param string $icon
      * @param bool   $showIconOnly
      */
-    public function setIcon($icon, $showIconOnly = true)
+    public function setIcon(string $icon, bool $showIconOnly = true)
     {
         $this->icon = $icon;
         if ($showIconOnly) {
@@ -105,6 +112,7 @@ class Button
             $this->renderMode = self::RENDER_MODE_ICON_LABEL;
         }
     }
+
 
     /**
      * Getter for blade
