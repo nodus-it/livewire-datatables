@@ -81,7 +81,7 @@ class Button
      *
      * @param string $target Target
      *
-     * @return $this
+     * @return Button
      */
     public function setTarget(string $target)
     {
@@ -95,6 +95,8 @@ class Button
      *
      * @param string $icon
      * @param bool   $showIconOnly
+     *
+     * @return Button
      */
     public function setIcon($icon, $showIconOnly = true)
     {
@@ -104,6 +106,8 @@ class Button
         } else {
             $this->renderMode = self::RENDER_MODE_ICON_LABEL;
         }
+
+        return $this;
     }
 
     /**

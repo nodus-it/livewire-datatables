@@ -94,40 +94,56 @@ class Column
      * Set the search keys for this column
      *
      * @param array|string $keys
+     *
+     * @return Column
      */
     public function setSearchKeys($keys)
     {
         $this->searchKeys = Arr::wrap($keys);
+
+        return $this;
     }
 
     /**
      * Set the sort keys for this column
      *
      * @param array|string $keys
+     *
+     * @return Column
      */
     public function setSortKeys($keys)
     {
         $this->sortKeys = Arr::wrap($keys);
+
+        return $this;
     }
 
     /**
      * Set the html flag
      *
      * @param bool $html Allow html
+     *
+     * @return Column
      */
     public function enableHtml(bool $html = true)
     {
         $this->html = $html;
+
+        return $this;
     }
 
     /**
      * Set breakpoint for column
      *
      * @param int $breakpoint
+     *
+     * @return Column
      */
     public function setBreakpoint(int $breakpoint)
     {
         $this->breakpoint = $breakpoint;
+
+        return $this;
     }
 
 
@@ -293,34 +309,50 @@ class Column
 
     /**
      * Marks this column as data type 'date'
+     *
+     * @return Column
      */
     public function setDataTypeDate()
     {
         $this->datatype = 'date';
+
+        return $this;
     }
 
     /**
      * Marks this column as data type 'datetime'
+     *
+     * @return Column
      */
     public function setDataTypeDateTime()
     {
         $this->datatype = 'datetime';
+
+        return $this;
     }
 
     /**
      * Marks this column as data type 'time'
+     *
+     * @return Column
      */
     public function setDataTypeTime()
     {
         $this->datatype = 'time';
+
+        return $this;
     }
 
     /**
      * Marks this column as data type 'bool'
+     *
+     * @return Column
      */
     public function setDataTypeBool()
     {
         $this->enableHtml();
         $this->datatype = 'bool';
+
+        return $this;
     }
 }
