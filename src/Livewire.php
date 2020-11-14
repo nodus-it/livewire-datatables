@@ -7,16 +7,6 @@ namespace Nodus\Packages\LivewireDatatables;
 trait Livewire
 {
     /**
-     * @var null|string Default layout name
-     */
-    protected ?string $defaultLayout = null;
-
-    /**
-     * @var string|null Default
-     */
-    protected ?string $defaultSection = null;
-
-    /**
      * Create a new LivewireComponent instance
      *
      * @param string $componentName Livewire component name
@@ -28,11 +18,11 @@ trait Livewire
     {
         $livewireComponent = new LivewireComponent($componentName, $parameter);
 
-        if ($this->defaultLayout != null) {
+        if (property_exists($this, 'defaultLayout')) {
             $livewireComponent->layout($this->defaultLayout);
         }
 
-        if ($this->defaultSection != null) {
+        if (property_exists($this, 'defaultSection')) {
             $livewireComponent->section($this->defaultSection);
         }
 
