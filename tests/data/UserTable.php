@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Nodus\Packages\LivewireDatatables\Tests\data;
-
 
 use Nodus\Packages\LivewireDatatables\Livewire\DataTable;
 

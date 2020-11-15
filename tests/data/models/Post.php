@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Nodus\Packages\LivewireDatatables\Tests\data\models;
-
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

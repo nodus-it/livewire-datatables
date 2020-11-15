@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Nodus\Packages\LivewireDatatables\Tests;
 
 use Nodus\Packages\LivewireDatatables\Services\SimpleScope;

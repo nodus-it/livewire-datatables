@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Nodus\Packages\LivewireDatatables\Tests\data\database\factories;
-
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Nodus\Packages\LivewireDatatables\Tests\data\models\Post;

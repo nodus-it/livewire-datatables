@@ -18,6 +18,7 @@
     }
   ],
   "require": {
+    "php": "^7.4",
     "livewire/livewire": "^2.3"
   },
   "require-dev": {

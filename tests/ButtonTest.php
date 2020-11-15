@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Nodus\Packages\LivewireDatatables\Tests;
-
 
 use Nodus\Packages\LivewireDatatables\Services\Button;
 use Nodus\Packages\LivewireDatatables\Tests\data\models\User;
