@@ -93,18 +93,17 @@ class LivewireComponent implements Responsable
      */
     public function render()
     {
-        return view(
-            'nodus.packages.livewire-datatables::livewire.base-component',
-            array_merge(
-                $this->layoutParameter,
-                [
-                    'livewire__component_name' => $this->componentName,
-                    'livewire__parameter'      => $this->parameter,
-                    'livewire__section'        => $this->section,
-                    'livewire__layout'         => $this->layout,
-                ]
-            )
+        $parameter = array_merge(
+            $this->layoutParameter,
+            [
+                'livewire__component_name' => $this->componentName,
+                'livewire__parameter'      => $this->parameter,
+                'livewire__section'        => $this->section,
+                'livewire__layout'         => $this->layout,
+            ]
         );
+
+        return view('nodus.packages.livewire-datatables::livewire.base-component', $parameter);
     }
 
     /**

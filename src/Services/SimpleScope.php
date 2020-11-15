@@ -57,7 +57,7 @@ class SimpleScope
     public function addScope(Builder $builder)
     {
         $model = $builder->getModel();
-        if (!method_exists(new $model, 'scope' . $this->scope)) {
+        if (!$builder->hasNamedScope($this->scope)) {
             throw new Exception('Scope "' . $this->scope . '" not found in model ' . $model);
         }
         $builder->{$this->scope}();

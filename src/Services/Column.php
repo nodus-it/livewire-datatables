@@ -235,22 +235,14 @@ class Column
         }
         $var = $item;
         foreach ($values as $v) {
-            if (is_array($var) && array_key_exists($v, $var)) {
-                $var = $var[ $v ];
-            } else {
-                if (method_exists($var, $v)) {
-                    if (!is_a($var->$v(), Relation::class)) {
-                        $var = $var->$v();
-                    } else {
-                        $var = $var->$v;
-                    }
+            if (method_exists($var, $v)) {
+                if (!is_a($var->$v(), Relation::class)) {
+                    $var = $var->$v();
                 } else {
-                    try {
-                        $var = $var->$v;
-                    } catch (\Throwable $e) {
-                        $var = 'Value not found';
-                    }
+                    $var = $var->$v;
                 }
+            } else {
+                $var = $var->$v;
             }
         }
 
