@@ -4,35 +4,50 @@ namespace Nodus\Packages\LivewireDatatables;
 
 use Illuminate\Contracts\Support\Responsable;
 
+/**
+ * Livewire Component Class
+ *
+ * @package Nodus\Packages\LivewireDatatables
+ */
 class LivewireComponent implements Responsable
 {
     /**
-     * @var string Livewire component name
+     * Livewire component name
+     *
+     * @var string
      */
     private string $componentName;
 
     /**
-     * @var array Livewire component parameters for mount
+     * Livewire component parameters for mount
+     *
+     * @var array
      */
     private array $parameter;
 
     /**
-     * @var string Section name in extended layout
+     * Section name in extended layout
+     *
+     * @var string
      */
     private string $section = 'content';
 
     /**
-     * @var string Layout view name
+     * Layout view name
+     *
+     * @var string
      */
     private string $layout = 'layouts.app';
 
     /**
-     * @var array Layout parameter
+     * Layout parameter
+     *
+     * @var array
      */
     private array $layoutParameter = [];
 
     /**
-     * Create a new LivewireComponent instance
+     * Creates a new LivewireComponent instance
      *
      * @param string $componentName Livewire component name
      * @param array  $parameter     Livewire component parameter
@@ -45,13 +60,13 @@ class LivewireComponent implements Responsable
     }
 
     /**
-     * Set section where livewire component should be included
+     * Sets the view section where the livewire component should be included
      *
      * @param string $section section name
      *
      * @return $this
      */
-    public function section($section)
+    public function section(string $section)
     {
         $this->section = $section;
 
@@ -59,13 +74,13 @@ class LivewireComponent implements Responsable
     }
 
     /**
-     * Set layout which livewire should extend
+     * Sets the layout which livewire should extend
      *
      * @param string $layout Layout name
      *
      * @return $this
      */
-    public function layout($layout)
+    public function layout(string $layout)
     {
         $this->layout = $layout;
 
@@ -73,7 +88,7 @@ class LivewireComponent implements Responsable
     }
 
     /**
-     * Set parameter used in layout
+     * Sets the parameter used in layout
      *
      * @param array $layoutParameter Layout parameter
      *
@@ -87,7 +102,7 @@ class LivewireComponent implements Responsable
     }
 
     /**
-     * Render the view
+     * Renders the view
      *
      * @return mixed
      */
