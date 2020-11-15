@@ -6,7 +6,6 @@ use Nodus\Packages\LivewireDatatables\Livewire\DataTable;
 
 class UserTable extends DataTable
 {
-
     protected function columns()
     {
         $this->addColumn('first_name');
