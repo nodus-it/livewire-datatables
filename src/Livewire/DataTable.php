@@ -330,13 +330,22 @@ abstract class DataTable extends Component
      * @param string|null  $label  Label for column
      *
      * @return Column
+     * @throws Exception
      */
     protected function addColumn($values, string $label = null)
     {
         if ($label == null) {
-            $label = $this->getTranslationStringByModel('fields.' . ((is_array($values)) ? $values[ 0 ] : $values));
+            if ($values instanceof \Closure) {
+                $label = 'closure';
+            } else {
+                $label = $this->getTranslationStringByModel('fields.' . ((is_array($values)) ? $values[ 0 ] : $values));
+            }
         }
         $column = new $this->columnClass($values, $label);
+        if ($values instanceof \Closure) {
+            $column->setSearchKeys('');
+            $column->setSortKeys('');
+        }
         $this->columns[ $column->getId() ] = $column;
 
         return $column;

@@ -3,6 +3,7 @@
 namespace Nodus\Packages\LivewireDatatables\Services;
 
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
@@ -225,12 +226,16 @@ class Column
      * Builds the value
      *
      * @param Model  $item  Data Model
-     * @param string $value value string
+     * @param string|Closure $value value string
      *
      * @return Model|string
      */
-    protected function getValue(Model $item, string $value)
+    protected function getValue(Model $item, $value)
     {
+        if ($value instanceof Closure) {
+            return $value($item);
+        }
+
         if (str_contains($value, '.')) {
             $values = explode('.', $value);
         } else {

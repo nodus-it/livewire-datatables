@@ -52,6 +52,18 @@ class ColumnTest extends TestCase
         $this->assertEquals('Bastian Schur', $column->getValues($user));
     }
 
+    public function testClosureValue()
+    {
+        $user = new User();
+        $user->first_name = 'Bastian';
+        $column = new Column(
+            function ($user) {
+                return $user->first_name . '-extension';
+            }, 'label'
+        );
+        $this->assertEquals('Bastian-extension', $column->getValues($user));
+    }
+
     public function testChangeSortKey()
     {
         $column = new Column('name', 'label');

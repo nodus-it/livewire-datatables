@@ -11,6 +11,11 @@ class UserTable extends DataTable
         $this->addColumn('first_name');
         $this->addColumn('last_name');
         $this->addColumn('email');
+        $this->addColumn(
+            function ($user) {
+                return $user->first_name . '-extension';
+            }
+        );
         $this->addColumn('admin')->setDataTypeBool();
     }
 
