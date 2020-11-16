@@ -59,7 +59,8 @@ class ColumnTest extends TestCase
         $column = new Column(
             function ($user) {
                 return $user->first_name . '-extension';
-            }, 'label'
+            },
+            'label'
         );
         $this->assertEquals('Bastian-extension', $column->getValues($user));
     }

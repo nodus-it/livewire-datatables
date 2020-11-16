@@ -68,7 +68,10 @@ class DataTableTest extends TestCase
         foreach ($languages as $language) {
             Lang::setLocale($language);
             foreach ($translationStrings as $translationString) {
-                $this->assertTrue(Lang::has($translationString), 'missing translation string "' . $translationString . '" for "' . $language . '"');
+                $this->assertTrue(
+                    Lang::has($translationString),
+                    'missing translation string "' . $translationString . '" for "' . $language . '"'
+                );
             }
         }
     }
