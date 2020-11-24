@@ -138,8 +138,8 @@ class ColumnTest extends TestCase
         $user->admin = true;
         $column = new Column('admin', 'label');
         $this->assertInstanceOf(Column::class, $column->setDataTypeBool());
-        $this->assertEquals("<span class=\"text-success\">✓</span>\n", $column->getValues($user));
+        $this->assertStringContainsString('<span class="text-success">✓</span>', $column->getValues($user));
         $user->admin = false;
-        $this->assertEquals("<span class=\"text-danger\">✕</span>\n", $column->getValues($user));
+        $this->assertStringContainsString('<span class="text-danger">✕</span>', $column->getValues($user));
     }
 }
