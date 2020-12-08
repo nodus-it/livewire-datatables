@@ -71,6 +71,13 @@ abstract class DataTable extends Component
     public int $paginate = 10;
 
     /**
+     * Paginate on each side
+     *
+     * @var int
+     */
+    public int $paginateOnEachSide = 2;
+
+    /**
      * Current Sort Column
      *
      * @var string|null
@@ -169,7 +176,7 @@ abstract class DataTable extends Component
         return view(
             'nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.datatable',
             [
-                'results'      => $builder->paginate($this->paginate),
+                'results'      => $builder->paginate($this->paginate)->onEachSide($this->paginateOnEachSide),
                 'columns'      => $this->columns,
                 'simpleScopes' => $this->simpleScopes,
                 'buttons'      => $this->buttons,
