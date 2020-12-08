@@ -8,7 +8,7 @@
 [![codecov](https://codecov.io/gh/nodus-it/livewire-datatables/branch/master/graph/badge.svg)](https://codecov.io/gh/nodus-it/livewire-datatables)
 
 
-_An awesome package for easy dynamic forms with livewire._
+_An awesome package for easy dynamic datatables with livewire._
 
 **This package is currently being developed and is still in testing**
 
