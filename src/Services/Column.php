@@ -256,6 +256,10 @@ class Column
 
         switch ($this->datatype) {
             case 'date':
+                if ($var === null) {
+                    return '-';
+                }
+
                 if (!$var instanceof Carbon) {
                     $var = Carbon::parse($var);
                 }
@@ -263,6 +267,10 @@ class Column
                 return $var->isoFormat('L');
 
             case 'datetime':
+                if ($var === null) {
+                    return '-';
+                }
+
                 if (!$var instanceof Carbon) {
                     $var = Carbon::parse($var);
                 }
@@ -270,6 +278,10 @@ class Column
                 return $var->isoFormat('L') . ' ' . $var->isoFormat('LTS');
 
             case 'time':
+                if ($var === null) {
+                    return '-';
+                }
+
                 if (!$var instanceof Carbon) {
                     $var = Carbon::parse($var);
                 }
