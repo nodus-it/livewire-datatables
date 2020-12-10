@@ -52,4 +52,11 @@ class ButtonTest extends TestCase
         $button->setClasses(['a', 'b']);
         $this->assertEquals('a b', $button->getClasses());
     }
+
+    public function testConfirmation()
+    {
+        $button = new Button('Details', 'users.details', ['id' => '5']);
+        $button->setConfirmation('a', 'b', 'c', 'd');
+        $this->assertEquals(['message' => 'a', 'title' => 'b', 'confirm' => 'c', 'abort' => 'd'], $button->getConfirmation());
+    }
 }

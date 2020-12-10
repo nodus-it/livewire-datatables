@@ -71,6 +71,11 @@ class Button
     protected array $classes = [];
 
     /**
+     * @var array Confirmation data
+     */
+    private array $confirmation = [];
+
+    /**
      * Creates an new scope object
      *
      * @param string $label          Scope label
@@ -127,6 +132,16 @@ class Button
     public function setClasses(array $classes)
     {
         $this->classes = $classes;
+    }
+
+    public function setConfirmation($message = null, $title = null, $confirm = null, $abort = null)
+    {
+        $this->confirmation = [
+            'message' => $message ?? trans('nodus.packages.livewire-datatables::datatable.confirm.message'),
+            'title'   => $title ?? trans('nodus.packages.livewire-datatables::datatable.confirm.title'),
+            'confirm' => $confirm ?? trans('nodus.packages.livewire-datatables::datatable.confirm.confirm'),
+            'abort'   => $abort ?? trans('nodus.packages.livewire-datatables::datatable.confirm.abort'),
+        ];
     }
 
 
@@ -218,5 +233,10 @@ class Button
         }
 
         return implode(' ', $this->classes);
+    }
+
+    public function getConfirmation()
+    {
+        return $this->confirmation;
     }
 }
