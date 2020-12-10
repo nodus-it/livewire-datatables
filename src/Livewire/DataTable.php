@@ -21,6 +21,8 @@ abstract class DataTable extends Component
 {
     use WithPagination;
 
+    public const SESSION_KEY_META_DATA = 'nodus-it.datatables.meta';
+
     /**
      * The Column class to be used in the addColumn method
      *
@@ -69,6 +71,13 @@ abstract class DataTable extends Component
      * @var int
      */
     public int $paginate = 10;
+
+    /**
+     * Paginate on each side
+     *
+     * @var int
+     */
+    public int $paginateOnEachSide = 2;
 
     /**
      * Current Sort Column
@@ -142,6 +151,8 @@ abstract class DataTable extends Component
         $this->resultIds = $builder->pluck('id')->toArray();
         $this->resultModel = get_class($builder->getModel());
         $this->builder = $builder;
+
+        $this->readSessionMetaData();
     }
 
     /**
@@ -166,10 +177,12 @@ abstract class DataTable extends Component
         $this->applySearch($builder);
         $this->applySort($builder);
 
+        $this->writeSessionMetaData();
+
         return view(
             'nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.datatable',
             [
-                'results'      => $builder->paginate($this->paginate),
+                'results'      => $builder->paginate($this->paginate)->onEachSide($this->paginateOnEachSide),
                 'columns'      => $this->columns,
                 'simpleScopes' => $this->simpleScopes,
                 'buttons'      => $this->buttons,
@@ -387,5 +400,33 @@ abstract class DataTable extends Component
         $this->buttons[] = $button;
 
         return $button;
+    }
+
+    /**
+     * Write current table meta data in session
+     */
+    private function writeSessionMetaData()
+    {
+        $meta[ 'paginate' ] = $this->paginate;
+        $meta[ 'sort' ] = $this->sort;
+        $meta[ 'sortDirection' ] = $this->sortDirection;
+        $meta[ 'simpleScope' ] = $this->simpleScope;
+        $meta[ 'search' ] = $this->search;
+        session()->put(self::SESSION_KEY_META_DATA . '.' . get_class($this), $meta);
+    }
+
+    /**
+     * Read recent table meta data from session
+     */
+    private function readSessionMetaData()
+    {
+        if (session()->exists(self::SESSION_KEY_META_DATA . '.' . get_class($this))) {
+            $meta = session()->get(self::SESSION_KEY_META_DATA . '.' . get_class($this));
+            $this->paginate = $meta[ 'paginate' ];
+            $this->sort = $meta[ 'sort' ];
+            $this->sortDirection = $meta[ 'sortDirection' ];
+            $this->simpleScope = $meta[ 'simpleScope' ];
+            $this->search = $meta[ 'search' ];
+        }
     }
 }
