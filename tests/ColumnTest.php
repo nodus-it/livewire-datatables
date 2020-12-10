@@ -106,6 +106,8 @@ class ColumnTest extends TestCase
         $this->assertEquals('10/01/2020', $column->getValues($user));
         Carbon::setLocale('de');
         $this->assertEquals('01.10.2020', $column->getValues($user));
+        $user->name = null;
+        $this->assertEquals('-', $column->getValues($user));
     }
 
     public function testDataTypeDateTime()
@@ -118,6 +120,8 @@ class ColumnTest extends TestCase
         $this->assertEquals('10/01/2020 3:07:23 PM', $column->getValues($user));
         Carbon::setLocale('de');
         $this->assertEquals('01.10.2020 15:07:23', $column->getValues($user));
+        $user->name = null;
+        $this->assertEquals('-', $column->getValues($user));
     }
 
     public function testDataTypeTime()
@@ -130,6 +134,8 @@ class ColumnTest extends TestCase
         $this->assertEquals('3:07:23 PM', $column->getValues($user));
         Carbon::setLocale('de');
         $this->assertEquals('15:07:23', $column->getValues($user));
+        $user->name = null;
+        $this->assertEquals('-', $column->getValues($user));
     }
 
     public function testDataTypeBool()
@@ -141,5 +147,22 @@ class ColumnTest extends TestCase
         $this->assertEquals("<span class=\"text-success\">✓</span>\n", $column->getValues($user));
         $user->admin = false;
         $this->assertEquals("<span class=\"text-danger\">✕</span>\n", $column->getValues($user));
+    }
+
+    public function testCustomDataType()
+    {
+        Column::addCustomDataType(
+            'upper',
+            function ($var) {
+                return strtoupper($var);
+            }
+        );
+
+        $user = new User();
+        $user->name = 'username';
+        $column = new Column('name', 'label');
+        $this->assertInstanceOf(Column::class, $column->setDataTypeUpper());
+        $this->assertEquals('USERNAME', $column->getValues($user));
+        $column->setDataTypeNotAvailable();
     }
 }

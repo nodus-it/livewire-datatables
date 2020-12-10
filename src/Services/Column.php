@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * Column class
@@ -78,6 +79,8 @@ class Column
      * @var int
      */
     protected int $breakpoint = 0;
+
+    private static $customDataTypes = [];
 
     /**
      * Creates an new column object
@@ -225,7 +228,7 @@ class Column
     /**
      * Builds the value
      *
-     * @param Model  $item  Data Model
+     * @param Model          $item  Data Model
      * @param string|Closure $value value string
      *
      * @return Model|string
@@ -256,6 +259,10 @@ class Column
 
         switch ($this->datatype) {
             case 'date':
+                if ($var === null) {
+                    return '-';
+                }
+
                 if (!$var instanceof Carbon) {
                     $var = Carbon::parse($var);
                 }
@@ -263,6 +270,10 @@ class Column
                 return $var->isoFormat('L');
 
             case 'datetime':
+                if ($var === null) {
+                    return '-';
+                }
+
                 if (!$var instanceof Carbon) {
                     $var = Carbon::parse($var);
                 }
@@ -270,6 +281,10 @@ class Column
                 return $var->isoFormat('L') . ' ' . $var->isoFormat('LTS');
 
             case 'time':
+                if ($var === null) {
+                    return '-';
+                }
+
                 if (!$var instanceof Carbon) {
                     $var = Carbon::parse($var);
                 }
@@ -283,6 +298,10 @@ class Column
                 );
 
             default:
+                if (array_key_exists($this->datatype, self::$customDataTypes)) {
+                    $var = self::$customDataTypes[ $this->datatype ]($var);
+                }
+
                 return $var;
         }
     }
@@ -354,5 +373,36 @@ class Column
         $this->datatype = 'bool';
 
         return $this;
+    }
+
+    /**
+     * Magic Method for custom data types
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return $this|false
+     */
+    public function __call(string $name, array $arguments)
+    {
+        $dataType = strtolower(str_replace('setDataType', '', $name));
+        if (array_key_exists($dataType, self::$customDataTypes)) {
+            $this->datatype = $dataType;
+
+            return $this;
+        }
+
+        return false;
+    }
+
+    /**
+     * Adds an custom data type to column class
+     *
+     * @param string  $name    Name
+     * @param Closure $closure Custom Data Type Closure
+     */
+    public static function addCustomDataType(string $name, Closure $closure)
+    {
+        self::$customDataTypes[ $name ] = $closure;
     }
 }
