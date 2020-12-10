@@ -2,7 +2,7 @@
 
 namespace Nodus\Packages\LivewireDatatables;
 
-trait Livewire
+trait SupportsLivewire
 {
     /**
      * Create a new LivewireComponent instance

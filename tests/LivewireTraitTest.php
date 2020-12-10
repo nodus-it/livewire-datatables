@@ -8,13 +8,13 @@ class LivewireTraitTest extends TestCase
 {
     public function testLivewireDefault()
     {
-        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\Livewire')->getMockForTrait();
+        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\SupportsLivewire')->getMockForTrait();
         $this->assertInstanceOf(LivewireComponent::class, $mock->livewire('component-name', ['parameter1' => 'a']));
     }
 
     public function testLivewireWithDefaultLayout()
     {
-        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\Livewire')->getMockForTrait();
+        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\SupportsLivewire')->getMockForTrait();
         $mock->defaultLayout = 'my-layout';
         $livewire = $mock->livewire('component-name', ['parameter1' => 'a']);
         $this->assertInstanceOf(LivewireComponent::class, $livewire);
@@ -23,7 +23,7 @@ class LivewireTraitTest extends TestCase
 
     public function testLivewireWithDefaultSection()
     {
-        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\Livewire')->getMockForTrait();
+        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\SupportsLivewire')->getMockForTrait();
         $mock->defaultSection = 'my-section';
         $livewire = $mock->livewire('component-name', ['parameter1' => 'a']);
         $this->assertInstanceOf(LivewireComponent::class, $livewire);

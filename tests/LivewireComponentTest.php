@@ -9,7 +9,7 @@ class LivewireComponentTest extends TestCase
 {
     public function testDefault()
     {
-        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\Livewire')->getMockForTrait();
+        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\SupportsLivewire')->getMockForTrait();
         $livewire = $mock->livewire('component-name', ['parameter1' => 'a']);
         $this->assertInstanceOf(LivewireComponent::class, $livewire);
         $render = $livewire->render()->getData();
@@ -21,7 +21,7 @@ class LivewireComponentTest extends TestCase
 
     public function testLayoutParameter()
     {
-        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\Livewire')->getMockForTrait();
+        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\SupportsLivewire')->getMockForTrait();
         $livewire = $mock->livewire('component-name', ['parameter1' => 'a']);
         $livewire->layoutParameter(['parameter2' => 'b']);
         $this->assertInstanceOf(LivewireComponent::class, $livewire);
@@ -32,7 +32,7 @@ class LivewireComponentTest extends TestCase
 
     public function testToResponse()
     {
-        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\Livewire')->getMockForTrait();
+        $mock = $this->getMockBuilder('Nodus\Packages\LivewireDatatables\SupportsLivewire')->getMockForTrait();
         $livewire = $mock->livewire('component-name', ['parameter1' => 'a']);
         $this->assertEquals($livewire->render(), $livewire->toResponse(new Request()));
     }
