@@ -44,4 +44,12 @@ class ButtonTest extends TestCase
         $this->assertEquals('fa-user', $button->getIcon());
         $this->assertEquals(3, $button->getRenderMode());
     }
+
+    public function testCustomClasses()
+    {
+        $button = new Button('Details', 'users.details', ['id' => '5']);
+        $this->assertNull($button->getClasses());
+        $button->setClasses(['a', 'b']);
+        $this->assertEquals('a b', $button->getClasses());
+    }
 }

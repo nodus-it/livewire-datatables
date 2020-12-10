@@ -68,6 +68,8 @@ class Button
      */
     protected int $renderMode = self::RENDER_MODE_LABEL;
 
+    protected array $classes = [];
+
     /**
      * Creates an new scope object
      *
@@ -115,6 +117,16 @@ class Button
         }
 
         return $this;
+    }
+
+    /**
+     * Sets the custom classes for button
+     *
+     * @param array $classes
+     */
+    public function setClasses(array $classes)
+    {
+        $this->classes = $classes;
     }
 
 
@@ -192,5 +204,19 @@ class Button
     public function getRenderMode()
     {
         return $this->renderMode;
+    }
+
+    /**
+     * Returns the custom button classes
+     *
+     * @return string
+     */
+    public function getClasses()
+    {
+        if (count($this->classes) == 0) {
+            return null;
+        }
+
+        return implode(' ', $this->classes);
     }
 }
