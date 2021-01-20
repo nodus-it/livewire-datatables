@@ -3,6 +3,7 @@
 namespace Nodus\Packages\LivewireDatatables\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
@@ -127,11 +128,11 @@ class Button
     /**
      * Sets the custom classes for button
      *
-     * @param array $classes
+     * @param array|string $classes
      */
-    public function setClasses(array $classes)
+    public function setClasses($classes)
     {
-        $this->classes = $classes;
+        $this->classes = Arr::wrap($classes);
     }
 
     public function setConfirmation($message = null, $title = null, $confirm = null, $abort = null)
