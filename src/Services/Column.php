@@ -126,6 +126,21 @@ class Column
     }
 
     /**
+     * Sets the sort and search keys for this column
+     *
+     * @param array|string $keys
+     *
+     * @return $this
+     */
+    public function setSortAndSearchKeys($keys)
+    {
+        $this->sortKeys = Arr::wrap($keys);
+        $this->searchKeys = Arr::wrap($keys);
+
+        return $this;
+    }
+
+    /**
      * Sets the html flag
      *
      * @param bool $html Allow html
