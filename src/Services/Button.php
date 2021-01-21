@@ -69,6 +69,11 @@ class Button
      */
     protected int $renderMode = self::RENDER_MODE_LABEL;
 
+    /**
+     * CSS classes array
+     *
+     * @var array
+     */
     protected array $classes = [];
 
     /**
@@ -129,13 +134,27 @@ class Button
      * Sets the custom classes for button
      *
      * @param array|string $classes
+     *
+     * @return static
      */
     public function setClasses($classes)
     {
         $this->classes = Arr::wrap($classes);
+
+        return $this;
     }
 
-    public function setConfirmation($message = null, $title = null, $confirm = null, $abort = null)
+    /**
+     * Defines the current button as confirmation button and sets the related parameters
+     *
+     * @param string|null $message
+     * @param string|null $title
+     * @param string|null $confirm
+     * @param string|null $abort
+     *
+     * @return static
+     */
+    public function setConfirmation(string $message = null, string $title = null, string $confirm = null, string $abort = null)
     {
         $this->confirmation = [
             'message' => $message ?? trans('nodus.packages.livewire-datatables::datatable.confirm.message'),
@@ -143,6 +162,8 @@ class Button
             'confirm' => $confirm ?? trans('nodus.packages.livewire-datatables::datatable.confirm.confirm'),
             'abort'   => $abort ?? trans('nodus.packages.livewire-datatables::datatable.confirm.abort'),
         ];
+
+        return $this;
     }
 
 
@@ -236,6 +257,11 @@ class Button
         return implode(' ', $this->classes);
     }
 
+    /**
+     * Returns the confirmation parameter array
+     *
+     * @return array
+     */
     public function getConfirmation()
     {
         return $this->confirmation;
