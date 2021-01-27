@@ -243,8 +243,12 @@ abstract class DataTable extends Component
         if ($this->sort == null) {
             $builder->orderBy('id', $this->sortDirection);
         } else {
-            foreach ($this->columns[ $this->sort ]->getSortKeys() as $sort) {
-                $builder->orderBy($sort, $this->sortDirection);
+            if (array_key_exists($this->sort, $this->columns)) {
+                foreach ($this->columns[ $this->sort ]->getSortKeys() as $sort) {
+                    $builder->orderBy($sort, $this->sortDirection);
+                }
+            } else {
+                $builder->orderBy($this->sort, $this->sortDirection);
             }
         }
 

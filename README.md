@@ -15,7 +15,8 @@ _An awesome package for easy dynamic datatables with livewire._
 ## Roadmap
 
 #### Near
-- Extendable column datatypes
+- Style anders lösen -> Nicht direkt über Bootstrap Klassen
+- Modals einzeln erzeugen oder ein Modal mit Javascript-Handling manipulieren
 
 #### Later
 - Advanced scopes
