@@ -81,6 +81,8 @@ class Button
      */
     private array $confirmation = [];
 
+    private \Closure $condition;
+
     /**
      * Creates an new scope object
      *
@@ -164,6 +166,16 @@ class Button
         ];
 
         return $this;
+    }
+
+    /**
+     * Sets a condition for displaying the button
+     *
+     * @param \Closure $closure
+     */
+    public function setCondition(\Closure $closure)
+    {
+        $this->condition = $closure;
     }
 
 
@@ -265,5 +277,23 @@ class Button
     public function getConfirmation()
     {
         return $this->confirmation;
+    }
+
+    /**
+     * Returns true if the button should be rendered
+     *
+     * @param Model $item
+     *
+     * @return bool|mixed
+     */
+    public function getDisplayButton(Model $item)
+    {
+        if (empty($this->condition)) {
+            return true;
+        } else {
+            $closure = $this->condition;
+
+            return $closure($item);
+        }
     }
 }
