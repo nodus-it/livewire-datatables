@@ -66,6 +66,13 @@ abstract class DataTable extends Component
     public string $resultModel;
 
     /**
+     * Result DB Table
+     *
+     * @var string
+     */
+    public string $resultTable;
+
+    /**
      * Paginate Count
      *
      * @var int
@@ -148,11 +155,23 @@ abstract class DataTable extends Component
      */
     public function mount(Builder $builder)
     {
-        $this->resultIds = $builder->pluck('id')->toArray();
         $this->resultModel = get_class($builder->getModel());
+        $this->resultTable = $builder->getModel()->getTable();
+        $this->resultIds = $builder->pluck($this->prefixCol('id'))->toArray();
+
         $this->builder = $builder;
 
         $this->readSessionMetaData();
+    }
+
+    /**
+     * Prefixes the column with the underlaying database table
+     *
+     * @return string
+     */
+    public function prefixCol(string $column)
+    {
+        return $this->resultTable . '.' . $column;
     }
 
     /**
@@ -241,7 +260,7 @@ abstract class DataTable extends Component
     protected function applySort(Builder $builder)
     {
         if ($this->sort == null) {
-            $builder->orderBy('id', $this->sortDirection);
+            $builder->orderBy($this->prefixCol('id'), $this->sortDirection);
         } else {
             if (array_key_exists($this->sort, $this->columns)) {
                 foreach ($this->columns[ $this->sort ]->getSortKeys() as $sort) {
@@ -310,7 +329,7 @@ abstract class DataTable extends Component
         if ($this->builder == null) {
             $model = new $this->resultModel();
 
-            return $model->whereIn($model->getTable() . '.id', $this->resultIds);
+            return $model->whereIn($this->prefixCol('id'), $this->resultIds);
         }
 
         return $this->builder;
