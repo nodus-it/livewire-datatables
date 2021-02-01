@@ -66,13 +66,6 @@ abstract class DataTable extends Component
     public string $resultModel;
 
     /**
-     * Result DB Table
-     *
-     * @var string
-     */
-    public string $resultTable;
-
-    /**
      * Paginate Count
      *
      * @var int
@@ -156,7 +149,6 @@ abstract class DataTable extends Component
     public function mount($builder)
     {
         $this->resultModel = get_class($builder->getModel());
-        $this->resultTable = $builder->getModel()->getTable();
         $this->resultIds = $builder->pluck($this->prefixCol('id'))->toArray();
 
         $this->builder = $builder;
@@ -171,7 +163,7 @@ abstract class DataTable extends Component
      */
     public function prefixCol(string $column)
     {
-        return $this->resultTable . '.' . $column;
+        return $this->getBuilder()->getModel()->getTable() . '.' . $column;
     }
 
     /**
