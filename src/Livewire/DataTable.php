@@ -140,7 +140,7 @@ abstract class DataTable extends Component
      *
      * @var Builder|null
      */
-    private ?Builder $builder = null;
+    private $builder = null;
 
     public function __construct($id = null)
     {
@@ -151,9 +151,9 @@ abstract class DataTable extends Component
     /**
      * On mount handler
      *
-     * @param Builder $builder
+     * @param $builder
      */
-    public function mount(Builder $builder)
+    public function mount($builder)
     {
         $this->resultModel = get_class($builder->getModel());
         $this->resultTable = $builder->getModel()->getTable();
@@ -217,7 +217,7 @@ abstract class DataTable extends Component
      * @return Builder Builder
      * @throws Exception Scope not found in model
      */
-    protected function applyScopes(Builder $builder)
+    protected function applyScopes($builder)
     {
         if ($this->simpleScope != '') {
             $builder = $this->simpleScopes[ $this->simpleScope ]->addScope($builder);
@@ -233,7 +233,7 @@ abstract class DataTable extends Component
      *
      * @return Builder Builder
      */
-    protected function applySearch(Builder $builder)
+    protected function applySearch($builder)
     {
         if ($this->search != '') {
             $builder->where(
@@ -257,7 +257,7 @@ abstract class DataTable extends Component
      *
      * @return Builder
      */
-    protected function applySort(Builder $builder)
+    protected function applySort($builder)
     {
         if ($this->sort == null) {
             $builder->orderBy($this->prefixCol('id'), $this->sortDirection);
