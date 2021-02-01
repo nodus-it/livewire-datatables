@@ -321,7 +321,7 @@ abstract class DataTable extends Component
         if ($this->builder == null) {
             $model = new $this->resultModel();
 
-            return $model->whereIn($this->prefixCol('id'), $this->resultIds);
+            return $model->whereIn($model->getModel()->getTable() . '.id', $this->resultIds);
         }
 
         return $this->builder;
