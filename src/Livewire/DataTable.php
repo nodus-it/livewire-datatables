@@ -135,6 +135,11 @@ abstract class DataTable extends Component
      */
     private $builder = null;
 
+    /**
+     * @var array Additional view parameter
+     */
+    public array $additionalViewParameter = [];
+
     public function __construct($id = null)
     {
         $this->paginationTheme = config('livewire-datatables.theme');
@@ -144,10 +149,12 @@ abstract class DataTable extends Component
     /**
      * On mount handler
      *
-     * @param $builder
+     * @param       $builder
+     * @param array $additionalViewParameter
      */
-    public function mount($builder)
+    public function mount($builder, array $additionalViewParameter = [])
     {
+        $this->additionalViewParameter = $additionalViewParameter;
         $this->resultModel = get_class($builder->getModel());
         $this->resultIds = $builder->pluck($this->prefixCol('id'))->toArray();
 
