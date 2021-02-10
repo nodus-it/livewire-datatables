@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Nodus\Packages\LivewireCore\SupportsAdditionalViewParameters;
 use Nodus\Packages\LivewireDatatables\Services\Button;
 use Nodus\Packages\LivewireDatatables\Services\Column;
 use Nodus\Packages\LivewireDatatables\Services\SimpleScope;
@@ -20,6 +21,7 @@ use Nodus\Packages\LivewireDatatables\Services\SimpleScope;
 abstract class DataTable extends Component
 {
     use WithPagination;
+    use SupportsAdditionalViewParameters;
 
     public const SESSION_KEY_META_DATA = 'nodus-it.datatables.meta';
 
