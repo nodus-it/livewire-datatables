@@ -163,6 +163,7 @@ class ColumnTest extends TestCase
         $column = new Column('name', 'label');
         $this->assertInstanceOf(Column::class, $column->setDataTypeUpper());
         $this->assertEquals('USERNAME', $column->getValues($user));
+        $this->expectExceptionMessage('Custom datatype "notavailable" not found!');
         $column->setDataTypeNotAvailable();
     }
 }

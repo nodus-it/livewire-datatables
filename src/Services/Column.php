@@ -391,23 +391,38 @@ class Column
     }
 
     /**
+     * Marks this column as the given data type
+     *
+     * @param string $dataType
+     *
+     * @throws \Exception
+     * @return $this
+     */
+    public function setDataTypeCustom(string $dataType)
+    {
+        if (!array_key_exists($dataType, self::$customDataTypes)) {
+            throw new \Exception('Custom datatype "' . $dataType . '" not found!');
+        }
+
+        $this->datatype = $dataType;
+
+        return $this;
+    }
+
+    /**
      * Magic Method for custom data types
      *
      * @param string $name
      * @param array  $arguments
      *
+     * @throws \Exception
      * @return $this|false
      */
     public function __call(string $name, array $arguments)
     {
         $dataType = strtolower(str_replace('setDataType', '', $name));
-        if (array_key_exists($dataType, self::$customDataTypes)) {
-            $this->datatype = $dataType;
 
-            return $this;
-        }
-
-        return false;
+        return $this->setDataTypeCustom($dataType);
     }
 
     /**
