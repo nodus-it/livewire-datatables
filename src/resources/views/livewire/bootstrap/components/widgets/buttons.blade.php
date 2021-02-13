@@ -1,5 +1,5 @@
 @if(count($buttons) > 0)
-    <td class="py-2">
+    <td class="align-middle py-2">
         <div class="btn-group" role="group">
             @foreach($buttons as $button)
                 @if($button->getDisplayButton($item))
