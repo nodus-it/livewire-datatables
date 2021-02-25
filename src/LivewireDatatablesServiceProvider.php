@@ -22,6 +22,5 @@ class LivewireDatatablesServiceProvider extends ServiceProvider
 
         $this->publishes([__DIR__ . '/config/livewire-datatables.php' => config_path('livewire-datatables.php')], 'livewire-datatables:config');
         $this->publishes([__DIR__ . '/resources/views' => resource_path('views/vendor/' . $this->packageNamespace)], 'livewire-datatables:views');
-
     }
 }
