@@ -339,7 +339,7 @@ abstract class DataTable extends Component
      */
     protected function getTranslationStringByModel(string $lang)
     {
-        return Str::plural(Str::lower(Str::afterLast($this->resultModel, '\\'))) . '.' . $lang;
+        return Str::plural(Str::snake(Str::afterLast($this->resultModel, '\\'))) . '.' . $lang;
     }
 
 
