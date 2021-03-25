@@ -238,7 +238,17 @@ abstract class DataTable extends Component
                 function (Builder $builder) {
                     foreach ($this->columns as $column) {
                         foreach ($column->getSearchKeys() as $searchKey) {
-                            $builder->orWhere($searchKey, 'LIKE', '%' . $this->search . '%');
+                            if (Str::contains($searchKey, '.')) {
+                                $searchKeys = explode('.', $searchKey);
+                                $builder->orWhereHas(
+                                    $searchKeys[ 0 ],
+                                    function (Builder $b) use ($searchKeys) {
+                                        $b->where($searchKeys[ 1 ], 'LIKE', '%' . $this->search . '%');
+                                    }
+                                );
+                            } else {
+                                $builder->orWhere($searchKey, 'LIKE', '%' . $this->search . '%');
+                            }
                         }
                     }
                 }
@@ -262,7 +272,9 @@ abstract class DataTable extends Component
         } else {
             if (array_key_exists($this->sort, $this->columns)) {
                 foreach ($this->columns[ $this->sort ]->getSortKeys() as $sort) {
-                    $builder->orderBy($sort, $this->sortDirection);
+                    if (!Str::contains($sort, '.')) {
+                        $builder->orderBy($sort, $this->sortDirection);
+                    }
                 }
             } else {
                 $builder->orderBy($this->sort, $this->sortDirection);

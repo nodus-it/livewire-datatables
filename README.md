@@ -55,6 +55,8 @@ If you want to create your own blade file and use datatables inline, you can jus
 
 #### Near
 
+- Support für SearchKeys über mehrere Relations
+- Support für SortKeys über Relations
 - Style anders lösen -> Nicht direkt über Bootstrap Klassen
 - Modals einzeln erzeugen oder ein Modal mit Javascript-Handling manipulieren
 
