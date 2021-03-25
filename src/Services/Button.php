@@ -216,7 +216,17 @@ class Button
 
         foreach ($this->routeParameter as $key => $value) {
             if (Str::startsWith($value, ':')) {
-                $parameter[ $key ] = $model->{ltrim($value, ':')};
+                $dbKey = ltrim($value, ':');
+                if (Str::contains($dbKey, '.')) {
+                    $keys = explode('.', $dbKey);
+                    $dbKey = $model;
+                    foreach ($keys as $k) {
+                        $dbKey = $dbKey->$k;
+                    }
+                    $parameter[ $key ] = $dbKey;
+                } else {
+                    $parameter[ $key ] = $model->$dbKey;
+                }
             } else {
                 $parameter[ $key ] = $value;
             }
