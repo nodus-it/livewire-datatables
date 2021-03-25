@@ -376,7 +376,7 @@ abstract class DataTable extends Component
             }
         }
         $column = new $this->columnClass($values, $label);
-        if ($values instanceof \Closure) {
+        if ($values instanceof \Closure || method_exists(new $this->resultModel, $values)) {
             $column->setSearchKeys('');
             $column->setSortKeys('');
         }
