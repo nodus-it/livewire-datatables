@@ -139,9 +139,22 @@ abstract class DataTable extends Component
      */
     private $builder = null;
 
+    /**
+     * Custom translation prefix
+     *
+     * @var string|null
+     */
+    protected ?string $translationPrefix = null;
+
+    /**
+     * DataTable constructor.
+     *
+     * @param null $id
+     */
     public function __construct($id = null)
     {
         $this->paginationTheme = config('livewire-datatables.theme');
+
         parent::__construct($id);
     }
 
@@ -346,7 +359,36 @@ abstract class DataTable extends Component
     }
 
     /**
-     * Generate a default translation string, based on model and column name
+     * Sets the translation prefix
+     *
+     * @param string|null $prefix
+     *
+     * @return $this
+     */
+    protected function setTranslationPrefix(?string $prefix)
+    {
+        $this->translationPrefix = $prefix;
+
+        return $this;
+    }
+
+    /**
+     * Returns the translation prefix
+     *
+     * @return string
+     */
+    protected function getTranslationPrefix()
+    {
+        // TODO unify with form package
+        if ($this->translationPrefix === null) {
+            return Str::plural(Str::snake(Str::afterLast($this->resultModel, '\\')));
+        }
+
+        return $this->translationPrefix;
+    }
+
+    /**
+     * Generates a default translation string, based on model and column name
      *
      * @param string $lang Column name
      *
@@ -354,7 +396,7 @@ abstract class DataTable extends Component
      */
     protected function getTranslationStringByModel(string $lang)
     {
-        return Str::plural(Str::snake(Str::afterLast($this->resultModel, '\\'))) . '.' . $lang;
+        return $this->getTranslationPrefix() . '.' . $lang;
     }
 
 
