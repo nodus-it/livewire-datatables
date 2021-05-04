@@ -4,10 +4,10 @@ namespace Nodus\Packages\LivewireDatatables\Services;
 
 use Carbon\Carbon;
 use Closure;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Traits\Macroable;
 
 /**
  * Column class
@@ -80,7 +80,12 @@ class Column
      */
     protected int $breakpoint = 0;
 
-    private static $customDataTypes = [];
+    /**
+     * Array of registered custom datatypes
+     *
+     * @var array
+     */
+    private static array $customDataTypes = [];
 
     /**
      * Creates an new column object
@@ -93,8 +98,8 @@ class Column
         $this->id = $label;
         $this->values = Arr::wrap($values);
         $this->label = $label;
-        $this->sortKeys = $this->values; // ToDo: Disable SortKeys oder manuell aktivieren?!
-        $this->searchKeys = $this->values; // ToDo: Disable SearchKeys oder manuell aktivieren?!
+        $this->sortKeys = $this->values;
+        $this->searchKeys = $this->values;
     }
 
     /**
@@ -138,6 +143,26 @@ class Column
         $this->searchKeys = Arr::wrap($keys);
 
         return $this;
+    }
+
+    /**
+     * Checks if the sort and search handling needs to be auto disabled for that column as default
+     *
+     * @param string $model
+     *
+     * @return bool
+     */
+    public function checkForAutoDisableSortAndSearch(string $model)
+    {
+        foreach ($this->values as $value) {
+            if ($value instanceof Closure || method_exists(new $model, $value)) {
+                $this->setSortAndSearchKeys('');
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -395,13 +420,13 @@ class Column
      *
      * @param string $dataType
      *
-     * @throws \Exception
+     * @throws Exception
      * @return $this
      */
     public function setDataTypeCustom(string $dataType)
     {
         if (!array_key_exists($dataType, self::$customDataTypes)) {
-            throw new \Exception('Custom datatype "' . $dataType . '" not found!');
+            throw new Exception('Custom datatype "' . $dataType . '" not found!');
         }
 
         $this->datatype = $dataType;
@@ -415,8 +440,8 @@ class Column
      * @param string $name
      * @param array  $arguments
      *
-     * @throws \Exception
-     * @return $this|false
+     * @throws Exception
+     * @return $this
      */
     public function __call(string $name, array $arguments)
     {

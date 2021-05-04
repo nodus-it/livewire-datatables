@@ -372,8 +372,8 @@ abstract class DataTable extends Component
     /**
      * Add a column to datatable
      *
-     * @param string|array $values Vaues for column
-     * @param string|null  $label  Label for column
+     * @param string|array|\Closure $values Values for column
+     * @param string|null           $label  Label for column
      *
      * @return Column
      * @throws Exception
@@ -387,11 +387,10 @@ abstract class DataTable extends Component
                 $label = $this->getTranslationStringByModel('fields.' . ((is_array($values)) ? $values[ 0 ] : $values));
             }
         }
+
         $column = new $this->columnClass($values, $label);
-        if ($values instanceof \Closure || method_exists(new $this->resultModel, $values)) {
-            $column->setSearchKeys('');
-            $column->setSortKeys('');
-        }
+        $column->checkForAutoDisableSortAndSearch($this->resultModel);
+
         $this->columns[ $column->getId() ] = $column;
 
         return $column;
