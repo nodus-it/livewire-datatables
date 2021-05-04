@@ -155,7 +155,7 @@ class Column
     public function checkForAutoDisableSortAndSearch(string $model)
     {
         foreach ($this->values as $value) {
-            if ($value instanceof Closure || method_exists(new $model, $value)) {
+            if ($value instanceof Closure || method_exists(new $model(), $value)) {
                 $this->setSortAndSearchKeys('');
 
                 return true;
