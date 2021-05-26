@@ -286,6 +286,10 @@ class Column
         }
         $var = $item;
         foreach ($values as $v) {
+            if ($var === null) {
+                break;
+            }
+
             if (method_exists($var, $v)) {
                 if (!is_a($var->$v(), Relation::class)) {
                     $var = $var->$v();
