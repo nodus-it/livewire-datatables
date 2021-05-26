@@ -156,7 +156,7 @@ class Column
     {
         foreach ($this->values as $value) {
             if ($value instanceof Closure || method_exists(new $model(), $value)) {
-                $this->setSortAndSearchKeys('');
+                $this->setSortAndSearchKeys(null);
 
                 return true;
             }
