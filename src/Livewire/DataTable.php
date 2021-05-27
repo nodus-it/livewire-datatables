@@ -67,7 +67,19 @@ abstract class DataTable extends Component
      */
     public string $resultModel;
 
+    /**
+     * Eager loading relations of the result
+     *
+     * @var array
+     */
     public array $resultWith = [];
+
+    /**
+     * Removed global scopes of the result (e.g. SoftDelete)
+     *
+     * @var array
+     */
+    public array $resultWithoutGlobalScope = [];
 
     /**
      * Paginate Count
@@ -161,7 +173,7 @@ abstract class DataTable extends Component
     /**
      * On mount handler
      *
-     * @param       $builder
+     * @param Builder $builder
      * @param array $additionalViewParameter
      */
     public function mount($builder)
@@ -169,6 +181,7 @@ abstract class DataTable extends Component
         $this->resultModel = get_class($builder->getModel());
         $this->resultIds = $builder->pluck($this->prefixCol('id'))->toArray();
         $this->resultWith = array_keys($builder->getEagerLoads()) ?? [];
+        $this->resultWithoutGlobalScope = $builder->removedScopes();
 
         $this->builder = $builder;
 
@@ -352,7 +365,16 @@ abstract class DataTable extends Component
         if ($this->builder == null) {
             $model = new $this->resultModel();
 
-            return $model->whereIn($model->getModel()->getTable() . '.id', $this->resultIds)->with($this->resultWith);
+            /**
+             * @var Builder $query
+             */
+            $query = $model::query();
+
+            foreach ($this->resultWithoutGlobalScope as $globalScope) {
+                $query->withoutGlobalScope($globalScope);
+            }
+
+            return $query->whereIn($model->getModel()->getTable() . '.id', $this->resultIds)->with($this->resultWith);
         }
 
         return $this->builder;
