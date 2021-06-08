@@ -1,5 +1,6 @@
 <div>
-    <style>
+    {{-- TODO refactor confirmation modal handling --}}
+    <style @if(is_callable(config('livewire-datatables.csp_nonce'))) nonce="{{ config('livewire-datatables.csp_nonce')() }}" @endif>
         .modal-confirm {
             color: var(--gray);
             width: 400px;
