@@ -11,7 +11,7 @@ _An awesome package for easy dynamic datatables with livewire._
 
 ## Installation
 
-``composer require nodus-it/livewire-core:dev-master``
+``composer require nodus-it/livewire-datatables:dev-master``
 
 ## Usage
 
