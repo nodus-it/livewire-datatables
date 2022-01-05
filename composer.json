@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0",
+    "php": "^7.4 || ^8.0 || ^8.1",
     "nodus-it/livewire-core": "0.1.*"
   },
   "require-dev": {
@@ -28,9 +28,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Nodus\\Packages\\LivewireDatatables\\": "src/",
-      "Database\\Factories\\": "database/factories/",
-      "Database\\Seeders\\": "database/seeders/"
+      "Nodus\\Packages\\LivewireDatatables\\": "src/"
     }
   },
   "autoload-dev": {
