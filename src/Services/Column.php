@@ -301,7 +301,22 @@ class Column
             }
         }
 
+        return $this->applyDatatype($var);
+    }
+
+    /**
+     * Applies the set datatype cast and output format to the given data
+     *
+     * @param mixed $var
+     *
+     * @return mixed|string
+     */
+    protected function applyDatatype($var)
+    {
         switch ($this->datatype) {
+            case 'text':
+                return $var;
+
             case 'date':
                 if ($var === null) {
                     return '-';

@@ -2,6 +2,7 @@
 
 namespace Nodus\Packages\LivewireDatatables\Livewire;
 
+use Closure;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
@@ -12,6 +13,8 @@ use Nodus\Packages\LivewireCore\SupportsAdditionalViewParameters;
 use Nodus\Packages\LivewireDatatables\Services\Button;
 use Nodus\Packages\LivewireDatatables\Services\Column;
 use Nodus\Packages\LivewireDatatables\Services\SimpleScope;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * DataTable Class
@@ -23,6 +26,9 @@ abstract class DataTable extends Component
     use WithPagination;
     use SupportsAdditionalViewParameters;
 
+    /**
+     * Session key constants
+     */
     public const SESSION_KEY_META_DATA = 'nodus-it.datatables.meta';
 
     /**
@@ -147,7 +153,7 @@ abstract class DataTable extends Component
     /**
      * Temporary Builder
      *
-     * @var Builder|null
+     * @var Builder|\Illuminate\Database\Query\Builder|null
      */
     private $builder = null;
 
@@ -174,7 +180,9 @@ abstract class DataTable extends Component
      * On mount handler
      *
      * @param Builder $builder
-     * @param array $additionalViewParameter
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function mount($builder)
     {
@@ -215,6 +223,7 @@ abstract class DataTable extends Component
         }
 
         $builder = $this->getBuilder();
+        $themePath = $this->getThemePath();
 
         $this->applyScopes($builder);
         $this->applySearch($builder);
@@ -223,12 +232,13 @@ abstract class DataTable extends Component
         $this->writeSessionMetaData();
 
         return view(
-            'nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.datatable',
+            $themePath . '.datatable',
             [
                 'results'      => $builder->paginate($this->paginate)->onEachSide($this->paginateOnEachSide),
                 'columns'      => $this->columns,
                 'simpleScopes' => $this->simpleScopes,
                 'buttons'      => $this->buttons,
+                'themePath'    => $themePath,
             ]
         );
     }
@@ -421,6 +431,16 @@ abstract class DataTable extends Component
         return $this->getTranslationPrefix() . '.' . $lang;
     }
 
+    /**
+     * Returns the theme view path
+     *
+     * @return string
+     */
+    protected function getThemePath()
+    {
+        return 'nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme');
+    }
+
 
     /**
      * Interface
@@ -436,16 +456,16 @@ abstract class DataTable extends Component
     /**
      * Add a column to datatable
      *
-     * @param string|array|\Closure $values Values for column
-     * @param string|null           $label  Label for column
+     * @param string|array|Closure $values Values for column
+     * @param string|null          $label  Label for column
      *
-     * @return Column
      * @throws Exception
+     * @return Column
      */
     protected function addColumn($values, string $label = null)
     {
         if ($label == null) {
-            if ($values instanceof \Closure) {
+            if ($values instanceof Closure) {
                 $label = 'closure';
             } else {
                 $label = $this->getTranslationStringByModel('fields.' . ((is_array($values)) ? $values[ 0 ] : $values));
@@ -499,30 +519,51 @@ abstract class DataTable extends Component
     }
 
     /**
-     * Write current table meta data in session
+     * Returns the key used for the metadata in the session
+     *
+     * @return string
      */
-    private function writeSessionMetaData()
+    protected function getSessionMetaDataKey()
     {
-        $meta[ 'paginate' ] = $this->paginate;
-        $meta[ 'sort' ] = $this->sort;
-        $meta[ 'sortDirection' ] = $this->sortDirection;
-        $meta[ 'simpleScope' ] = $this->simpleScope;
-        $meta[ 'search' ] = $this->search;
-        session()->put(self::SESSION_KEY_META_DATA . '.' . get_class($this), $meta);
+        return self::SESSION_KEY_META_DATA . '.' . get_class($this);
+    }
+
+    /**
+     * Write current table meta data in session
+     *
+     * @return void
+     */
+    protected function writeSessionMetaData()
+    {
+        session()->put($this->getSessionMetaDataKey(), [
+            'paginate'      => $this->paginate,
+            'sort'          => $this->sort,
+            'sortDirection' => $this->sortDirection,
+            'simpleScope'   => $this->simpleScope,
+            'search'        => $this->search,
+        ]);
     }
 
     /**
      * Read recent table meta data from session
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @return bool
      */
-    private function readSessionMetaData()
+    protected function readSessionMetaData()
     {
-        if (session()->exists(self::SESSION_KEY_META_DATA . '.' . get_class($this))) {
-            $meta = session()->get(self::SESSION_KEY_META_DATA . '.' . get_class($this));
-            $this->paginate = $meta[ 'paginate' ];
-            $this->sort = $meta[ 'sort' ];
-            $this->sortDirection = $meta[ 'sortDirection' ];
-            $this->simpleScope = $meta[ 'simpleScope' ];
-            $this->search = $meta[ 'search' ];
+        if (!session()->exists($this->getSessionMetaDataKey())) {
+            return false;
         }
+
+        $meta = session()->get($this->getSessionMetaDataKey());
+        $this->paginate = $meta[ 'paginate' ];
+        $this->sort = $meta[ 'sort' ];
+        $this->sortDirection = $meta[ 'sortDirection' ];
+        $this->simpleScope = $meta[ 'simpleScope' ];
+        $this->search = $meta[ 'search' ];
+
+        return true;
     }
 }

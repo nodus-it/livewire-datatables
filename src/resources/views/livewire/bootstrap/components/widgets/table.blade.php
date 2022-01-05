@@ -5,7 +5,7 @@
             @foreach($columns as $column)
                 <th class="border-top-0 {{$column->getClasses()}}" role="button" wire:click="changeSort('{{$column->getId()}}')">
                     {{$column->getLabel()}}
-                    @include('nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.components.widgets.sorting')
+                    @include($themePath . '.components.widgets.sorting')
                 </th>
             @endforeach
             @if(count($buttons) > 0)
@@ -25,7 +25,7 @@
                         <td class="align-middle {{$column->getClasses()}}">{{ $column->getValues($result)}}</td>
                     @endif
                 @endforeach
-                @include('nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.components.widgets.buttons',['item'=>$result])
+                @include($themePath . '.components.widgets.buttons', ['item' => $result])
             </tr>
         @endforeach
         @if($results->count() === 0)

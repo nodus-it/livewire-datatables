@@ -2,6 +2,7 @@
 
 namespace Nodus\Packages\LivewireDatatables\Services;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -77,11 +78,18 @@ class Button
     protected array $classes = [];
 
     /**
-     * @var array Confirmation data
+     * Confirmation data
+     *
+     * @var array
      */
-    private array $confirmation = [];
+    protected array $confirmation = [];
 
-    private \Closure $condition;
+    /**
+     * Dynamic render condition closure
+     *
+     * @var Closure|null
+     */
+    protected ?Closure $condition = null;
 
     /**
      * Creates an new scope object
@@ -123,11 +131,7 @@ class Button
     public function setIcon(string $icon, bool $showIconOnly = true)
     {
         $this->icon = $icon;
-        if ($showIconOnly) {
-            $this->renderMode = self::RENDER_MODE_ICON;
-        } else {
-            $this->renderMode = self::RENDER_MODE_ICON_LABEL;
-        }
+        $this->renderMode = ($showIconOnly) ? self::RENDER_MODE_ICON : self::RENDER_MODE_ICON_LABEL;
 
         return $this;
     }
@@ -171,9 +175,9 @@ class Button
     /**
      * Sets a condition for displaying the button
      *
-     * @param \Closure $closure
+     * @param Closure $closure
      */
-    public function setCondition(\Closure $closure)
+    public function setCondition(Closure $closure)
     {
         $this->condition = $closure;
     }
@@ -290,20 +294,30 @@ class Button
     }
 
     /**
+     * Return whether this is a confirmation button
+     *
+     * @return bool
+     */
+    public function isConfirmationButton()
+    {
+        return !empty($this->confirmation);
+    }
+
+    /**
      * Returns true if the button should be rendered
      *
      * @param Model $item
      *
      * @return bool|mixed
      */
-    public function getDisplayButton(Model $item)
+    public function isAllowedToRender(Model $item)
     {
-        if (empty($this->condition)) {
+        if (!is_callable($this->condition)) {
             return true;
-        } else {
-            $closure = $this->condition;
-
-            return $closure($item);
         }
+
+        $closure = $this->condition;
+
+        return $closure($item);
     }
 }
