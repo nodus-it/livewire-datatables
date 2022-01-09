@@ -3,7 +3,9 @@ language: php
 php:
   - 7.4
   - 8.0
-  - 8.1
+  - 8.1.0
+
+dist: bionic
 
 before_script:
   - composer self-update

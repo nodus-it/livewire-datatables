@@ -153,21 +153,40 @@ class Button
     /**
      * Defines the current button as confirmation button and sets the related parameters
      *
-     * @param string|null $message
-     * @param string|null $title
-     * @param string|null $confirm
-     * @param string|null $abort
+     * @param string|null $text    Confirmation modal text
+     * @param string|null $title   Confirmation modal title
+     * @param string|null $confirm Confirmation modal confirm button label
+     * @param string|null $cancel  Confirmation modal cancel button label
+     * @param string|null $context Confirmation modal CSS styling context
      *
      * @return static
      */
-    public function setConfirmation(string $message = null, string $title = null, string $confirm = null, string $abort = null)
+    public function setConfirmation(string $text = null, string $title = null, string $confirm = null, string $cancel = null, string $context = null)
     {
+        // todo refactoring: maybe use extra ConfirmButton class instead
         $this->confirmation = [
-            'message' => $message ?? trans('nodus.packages.livewire-datatables::datatable.confirm.message'),
-            'title'   => $title ?? trans('nodus.packages.livewire-datatables::datatable.confirm.title'),
-            'confirm' => $confirm ?? trans('nodus.packages.livewire-datatables::datatable.confirm.confirm'),
-            'abort'   => $abort ?? trans('nodus.packages.livewire-datatables::datatable.confirm.abort'),
+            'enable' => true,
         ];
+
+        if ($text !== null) {
+            $this->confirmation[ 'text' ] = $text;
+        }
+
+        if ($title !== null) {
+            $this->confirmation[ 'title' ] = $title;
+        }
+
+        if ($confirm !== null) {
+            $this->confirmation[ 'confirm' ] = $confirm;
+        }
+
+        if ($cancel !== null) {
+            $this->confirmation[ 'cancel' ] = $cancel;
+        }
+
+        if ($context !== null) {
+            $this->confirmation[ 'context' ] = $context;
+        }
 
         return $this;
     }

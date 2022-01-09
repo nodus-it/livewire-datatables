@@ -39,7 +39,7 @@ class Column
     protected string $label = '';
 
     /**
-     * Values for show
+     * Values to be displayed
      *
      * @var array
      */
@@ -88,10 +88,10 @@ class Column
     private static array $customDataTypes = [];
 
     /**
-     * Creates an new column object
+     * Creates a new column object
      *
-     * @param string|array $values Values for show
-     * @param string       $label  Column label
+     * @param string|array|Closure $values Values to be displayed or closure
+     * @param string               $label  Column label
      */
     public function __construct($values, string $label)
     {
@@ -219,7 +219,7 @@ class Column
     }
 
     /**
-     * Returns the parsed values for show
+     * Returns the resolved values to be displayed
      *
      * @param Model $item Data Model
      *
@@ -284,6 +284,7 @@ class Column
         } else {
             $values[] = $value;
         }
+
         $var = $item;
         foreach ($values as $v) {
             if ($var === null) {

@@ -8,7 +8,7 @@
                         <th wire:click="changeSort('{{$column->getIdentifier()}}')" class="px-6 py-3 bg-gray-50 text-left text-xs leading-4
                         font-medium text-gray-500 uppercase tracking-wider">
                             {{$column->getLabel()}}
-                            @include('nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.components.widgets.sorting')
+                            @include($themePath . '.components.widgets.sorting')
                         </th>
                     @endforeach
                     @if(count($buttons) > 0)
@@ -28,7 +28,7 @@
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-cool-gray-900">{{ $column->getValues($result)}}</td>
                                 @endif
                             @endforeach
-                            @include('nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.components.widgets.buttons',['item'=>$result])
+                            @include($themePath . '.components.widgets.buttons', ['item' => $result])
                         </tr>
                     @endforeach
                     </tbody>

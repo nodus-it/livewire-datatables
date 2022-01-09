@@ -4,7 +4,6 @@ namespace Nodus\Packages\LivewireDatatables\Tests;
 
 use Illuminate\Support\Facades\Lang;
 use Livewire\Livewire;
-use Nodus\Packages\LivewireDatatables\Livewire\DataTable;
 use Nodus\Packages\LivewireDatatables\Tests\data\models\User;
 use Nodus\Packages\LivewireDatatables\Tests\data\UserTable;
 

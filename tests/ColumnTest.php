@@ -27,6 +27,8 @@ class ColumnTest extends TestCase
         $user->name = 'Bastian';
         $column = new Column('email', 'label');
         $this->assertEquals('', $column->getValues($user));
+        $column = new Column('unknownRelation.value', 'label2');
+        $this->assertEquals('', $column->getValues($user));
     }
 
     public function testMethodValue()
@@ -72,7 +74,7 @@ class ColumnTest extends TestCase
         $this->assertEquals(['fist_name', 'last_name'], $column->getSortKeys());
     }
 
-    public function testChangeSerachKey()
+    public function testChangeSearchKey()
     {
         $column = new Column('name', 'label');
         $this->assertInstanceOf(Column::class, $column->setSearchKeys(['fist_name', 'last_name']));

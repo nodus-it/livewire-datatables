@@ -441,6 +441,29 @@ abstract class DataTable extends Component
         return 'nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme');
     }
 
+    /**
+     * Returns the CSS styles of this component
+     *
+     * @return string
+     */
+    public static function styles()
+    {
+        return <<<CSS
+        /** Livewire datatable styles **/
+        .nodus-table-pagination-change .custom-select {
+            max-width: 100px;
+        }
+    
+        .nodus-table-simple-scopes .custom-select {
+            max-width: 300px;
+        }
+    
+        .nodus-table-search .form-control {
+            max-width: 300px;
+        }
+CSS;
+    }
+
 
     /**
      * Interface
