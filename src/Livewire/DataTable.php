@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Nodus\Packages\LivewireCore\Services\SupportsTranslationsByModel;
 use Nodus\Packages\LivewireCore\SupportsAdditionalViewParameters;
 use Nodus\Packages\LivewireDatatables\Services\Button;
 use Nodus\Packages\LivewireDatatables\Services\Column;
@@ -24,6 +25,7 @@ use Psr\Container\NotFoundExceptionInterface;
 abstract class DataTable extends Component
 {
     use WithPagination;
+    use SupportsTranslationsByModel;
     use SupportsAdditionalViewParameters;
 
     /**
@@ -158,13 +160,6 @@ abstract class DataTable extends Component
     private $builder = null;
 
     /**
-     * Custom translation prefix
-     *
-     * @var string|null
-     */
-    protected ?string $translationPrefix = null;
-
-    /**
      * DataTable constructor.
      *
      * @param null $id
@@ -269,20 +264,22 @@ abstract class DataTable extends Component
      */
     protected function applySearch($builder)
     {
-        if ($this->search != '') {
+        if (!empty($this->search)) {
             $builder->where(
                 function (Builder $builder) {
                     foreach ($this->columns as $column) {
                         foreach ($column->getSearchKeys() as $searchKey) {
                             if (Str::contains($searchKey, '.')) {
-                                $searchKeys = explode('.', $searchKey);
+                                // Relation table search
+                                [$relation, $relationSearchKey] = explode('.', $searchKey, 2);
                                 $builder->orWhereHas(
-                                    $searchKeys[ 0 ],
-                                    function (Builder $b) use ($searchKeys) {
-                                        $b->where($searchKeys[ 1 ], 'LIKE', '%' . $this->search . '%');
+                                    $relation,
+                                    function (Builder $b) use ($relationSearchKey) {
+                                        $b->where($relationSearchKey, 'LIKE', '%' . $this->search . '%');
                                     }
                                 );
                             } else {
+                                // Base table search
                                 $builder->orWhere($searchKey, 'LIKE', '%' . $this->search . '%');
                             }
                         }
@@ -303,17 +300,20 @@ abstract class DataTable extends Component
      */
     protected function applySort($builder)
     {
-        if ($this->sort == null) {
-            $builder->orderBy($this->prefixCol('id'), $this->sortDirection);
-        } else {
-            if (array_key_exists($this->sort, $this->columns)) {
-                foreach ($this->columns[ $this->sort ]->getSortKeys() as $sort) {
-                    if (!Str::contains($sort, '.')) {
-                        $builder->orderBy($sort, $this->sortDirection);
-                    }
-                }
-            } else {
-                $builder->orderBy($this->sort, $this->sortDirection);
+        // Sort by default by id
+        if ($this->sort === null) {
+            return $builder->orderBy($this->prefixCol('id'), $this->sortDirection);
+        }
+
+        // if the sort key isn't a column use it directly for sorting
+        if (!isset($this->columns[ $this->sort ])) {
+            return $builder->orderBy($this->sort, $this->sortDirection);
+        }
+
+        // if the sort key matches a column than use the columns sort keys
+        foreach ($this->columns[ $this->sort ]->getSortKeys() as $sort) {
+            if (!Str::contains($sort, '.')) {
+                $builder->orderBy($sort, $this->sortDirection);
             }
         }
 
@@ -391,44 +391,13 @@ abstract class DataTable extends Component
     }
 
     /**
-     * Sets the translation prefix
-     *
-     * @param string|null $prefix
-     *
-     * @return $this
-     */
-    protected function setTranslationPrefix(?string $prefix)
-    {
-        $this->translationPrefix = $prefix;
-
-        return $this;
-    }
-
-    /**
-     * Returns the translation prefix
+     * Returns the model class used for building the auto translation keys
      *
      * @return string
      */
-    protected function getTranslationPrefix()
+    protected function getTranslationModelClass(): string
     {
-        // TODO unify with form package
-        if ($this->translationPrefix === null) {
-            return Str::plural(Str::snake(Str::afterLast($this->resultModel, '\\')));
-        }
-
-        return $this->translationPrefix;
-    }
-
-    /**
-     * Generates a default translation string, based on model and column name
-     *
-     * @param string $lang Column name
-     *
-     * @return string
-     */
-    protected function getTranslationStringByModel(string $lang)
-    {
-        return $this->getTranslationPrefix() . '.' . $lang;
+        return $this->resultModel;
     }
 
     /**
@@ -462,6 +431,55 @@ abstract class DataTable extends Component
             max-width: 300px;
         }
 CSS;
+    }
+
+    /**
+     * Returns the key used for the metadata in the session
+     *
+     * @return string
+     */
+    protected function getSessionMetaDataKey()
+    {
+        return self::SESSION_KEY_META_DATA . '.' . get_class($this);
+    }
+
+    /**
+     * Write current table meta data in session
+     *
+     * @return void
+     */
+    protected function writeSessionMetaData()
+    {
+        session()->put($this->getSessionMetaDataKey(), [
+            'paginate'      => $this->paginate,
+            'sort'          => $this->sort,
+            'sortDirection' => $this->sortDirection,
+            'simpleScope'   => $this->simpleScope,
+            'search'        => $this->search,
+        ]);
+    }
+
+    /**
+     * Read recent table meta data from session
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @return bool
+     */
+    protected function readSessionMetaData()
+    {
+        if (!session()->exists($this->getSessionMetaDataKey())) {
+            return false;
+        }
+
+        $meta = session()->get($this->getSessionMetaDataKey());
+        $this->paginate = $meta[ 'paginate' ];
+        $this->sort = $meta[ 'sort' ];
+        $this->sortDirection = $meta[ 'sortDirection' ];
+        $this->simpleScope = $meta[ 'simpleScope' ];
+        $this->search = $meta[ 'search' ];
+
+        return true;
     }
 
 
@@ -539,54 +557,5 @@ CSS;
         $this->buttons[] = $button;
 
         return $button;
-    }
-
-    /**
-     * Returns the key used for the metadata in the session
-     *
-     * @return string
-     */
-    protected function getSessionMetaDataKey()
-    {
-        return self::SESSION_KEY_META_DATA . '.' . get_class($this);
-    }
-
-    /**
-     * Write current table meta data in session
-     *
-     * @return void
-     */
-    protected function writeSessionMetaData()
-    {
-        session()->put($this->getSessionMetaDataKey(), [
-            'paginate'      => $this->paginate,
-            'sort'          => $this->sort,
-            'sortDirection' => $this->sortDirection,
-            'simpleScope'   => $this->simpleScope,
-            'search'        => $this->search,
-        ]);
-    }
-
-    /**
-     * Read recent table meta data from session
-     *
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @return bool
-     */
-    protected function readSessionMetaData()
-    {
-        if (!session()->exists($this->getSessionMetaDataKey())) {
-            return false;
-        }
-
-        $meta = session()->get($this->getSessionMetaDataKey());
-        $this->paginate = $meta[ 'paginate' ];
-        $this->sort = $meta[ 'sort' ];
-        $this->sortDirection = $meta[ 'sortDirection' ];
-        $this->simpleScope = $meta[ 'simpleScope' ];
-        $this->search = $meta[ 'search' ];
-
-        return true;
     }
 }

@@ -32,7 +32,7 @@ class DataTableTest extends TestCase
         User::factory()->count(10)->create();
         $randomUserForSearch = User::query()->inRandomOrder()->first();
         $randomOtherUser = User::where('id', '!=', $randomUserForSearch->id)->inRandomOrder()->first();
-        Livewire::test(UserTable::class, ['builder' => User::query()])
+        Livewire::test(UserTable::class, ['builder' => User::query()->withTrashed()])
             ->set('search', $randomUserForSearch->email)
             ->assertDontSee($randomOtherUser->email)
             ->assertSee($randomUserForSearch->email);
@@ -41,16 +41,21 @@ class DataTableTest extends TestCase
     public function testSort()
     {
         User::factory()->count(10)->create();
+        $firstIdUser = User::orderBy('id', 'ASC')->first();
         $lastUser = User::orderBy('email', 'DESC')->first();
         $firstUser = User::orderBy('email', 'ASC')->first();
         Livewire::test(UserTable::class, ['builder' => User::query()])
-            ->set('paginate', 5)
+            ->set('paginate', 1)
+            ->assertSee($firstIdUser->email)
             ->call('changeSort', 'users.fields.email')
             ->assertDontSee($lastUser->email)
             ->assertSee($firstUser->email)
             ->call('changeSort', 'users.fields.email')
             ->assertSee($lastUser->email)
-            ->assertDontSee($firstUser->email);
+            ->assertDontSee($firstUser->email)
+            ->call('changeSort', 'email')
+            ->assertDontSee($lastUser->email)
+            ->assertSee($firstUser->email);
     }
 
     public function testTranslations()
