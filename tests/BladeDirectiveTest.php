@@ -2,7 +2,6 @@
 
 namespace Nodus\Packages\LivewireDatatables\Tests;
 
-
 use Illuminate\View\Compilers\BladeCompiler;
 
 class BladeDirectiveTest extends TestCase

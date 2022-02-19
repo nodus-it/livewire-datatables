@@ -36,7 +36,8 @@ class ConfirmModalTest extends TestCase
             ->assertSet('isOpen', true);
     }
 
-    public function testClose() {
+    public function testClose()
+    {
         Livewire::test(ConfirmModal::class)
             ->emit('confirm:show', 'delete/url/1', ['context' => 'warning'])
             ->assertSet('url', 'delete/url/1')

@@ -87,7 +87,9 @@ class ButtonTest extends TestCase
         $user2->admin = false;
 
         $button = new Button('Details', 'users.details', ['id' => '5']);
-        $button->setCondition(fn(User $user) => $user->admin);
+        $button->setCondition(function (User $user) {
+            return $user->admin;
+        });
 
         $this->assertTrue($button->isAllowedToRender($user1));
         $this->assertFalse($button->isAllowedToRender($user2));

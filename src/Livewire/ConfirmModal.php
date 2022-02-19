@@ -75,7 +75,7 @@ class ConfirmModal extends Component
      * Opens the confirmation modal
      *
      * @param string $url
-     * @param array $options
+     * @param array  $options
      */
     public function open(string $url, array $options = [])
     {
@@ -83,12 +83,13 @@ class ConfirmModal extends Component
             $this->close();
         }
 
+        $prefix = 'nodus.packages.livewire-datatables::confirm_modal.';
         $this->isOpen = true;
         $this->url = $url;
-        $this->title = $options['title'] ?? 'nodus.packages.livewire-datatables::confirm_modal.title';
-        $this->text = $options['text'] ?? 'nodus.packages.livewire-datatables::confirm_modal.text';
-        $this->confirmButton = $options[ 'confirm'] ?? 'nodus.packages.livewire-datatables::confirm_modal.button_confirm';
-        $this->cancelButton = $options[ 'cancel'] ?? 'nodus.packages.livewire-datatables::confirm_modal.button_confirm';
+        $this->title = $options[ 'title' ] ?? $prefix . 'title';
+        $this->text = $options[ 'text' ] ?? $prefix . 'text';
+        $this->confirmButton = $options[ 'confirm' ] ?? $prefix . 'button_confirm';
+        $this->cancelButton = $options[ 'cancel' ] ?? $prefix . 'button_confirm';
 
         if (isset($options[ 'context' ])) {
             $this->context = $options[ 'context' ];
