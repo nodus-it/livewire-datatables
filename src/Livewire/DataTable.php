@@ -5,6 +5,7 @@ namespace Nodus\Packages\LivewireDatatables\Livewire;
 use Closure;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -157,7 +158,7 @@ abstract class DataTable extends Component
      *
      * @var Builder|\Illuminate\Database\Query\Builder|null
      */
-    private $builder = null;
+    protected $builder = null;
 
     /**
      * DataTable constructor.
@@ -223,13 +224,14 @@ abstract class DataTable extends Component
         $this->applyScopes($builder);
         $this->applySearch($builder);
         $this->applySort($builder);
+        $paginator = $this->applyPagination($builder);
 
         $this->writeSessionMetaData();
 
         return view(
             $themePath . '.datatable',
             [
-                'results'      => $builder->paginate($this->paginate)->onEachSide($this->paginateOnEachSide),
+                'results'      => $paginator,
                 'columns'      => $this->columns,
                 'simpleScopes' => $this->simpleScopes,
                 'buttons'      => $this->buttons,
@@ -320,6 +322,18 @@ abstract class DataTable extends Component
         return $builder;
     }
 
+    /**
+     * Sets the limit and the offset
+     *
+     * @param Builder $builder
+     *
+     * @return Builder|LengthAwarePaginator
+     */
+    protected function applyPagination($builder)
+    {
+        return $builder->paginate($this->paginate)->onEachSide($this->paginateOnEachSide);
+    }
+
 
     /**
      * Events
@@ -370,7 +384,7 @@ abstract class DataTable extends Component
      *
      * @return Builder Builder
      */
-    private function getBuilder()
+    protected function getBuilder()
     {
         if ($this->builder == null) {
             $model = new $this->resultModel();
@@ -522,6 +536,16 @@ CSS;
     }
 
     /**
+     * Returns the array of registered columns
+     *
+     * @return array
+     */
+    protected function getColumns(): array
+    {
+        return $this->columns;
+    }
+
+    /**
      * Add a simple scope to datatable
      *
      * @param string      $scope Scope name
@@ -543,6 +567,16 @@ CSS;
     }
 
     /**
+     * Returns the array of registered simple scopes
+     *
+     * @return array
+     */
+    protected function getSimpleScopes(): array
+    {
+        return $this->simpleScopes;
+    }
+
+    /**
      * Add a button to datatable
      *
      * @param string $label          Button name
@@ -557,5 +591,15 @@ CSS;
         $this->buttons[] = $button;
 
         return $button;
+    }
+
+    /**
+     * Returns the array of registered buttons
+     *
+     * @return array
+     */
+    protected function getButtons(): array
+    {
+        return $this->buttons;
     }
 }
