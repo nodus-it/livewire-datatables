@@ -23,40 +23,40 @@ You can publish the blade views with:
 php artisan vendor:publish --provider="Nodus\Packages\LivewireDatatables\LivewireDatatablesServiceProvider" --tag="livewire-datatables:views"
 ````
 
+Now with the package installed we need to set up some things in order for things to properly work.
+
+First of all, all prerequisites of the livewire library are of course required. For these steps consult: https://laravel-livewire.com/docs/2.x/installation
+
+Second you should check the configs of the core package and this package and make sure all settings work for your project. Especially the blade stack names for styles and scripts could potentially differ from our defaults! 
+
+Additionally, we need to include the styles of the livewire datatable package.
+````php
+@livewireDatatableStyles
+````
+
 ## Usage
-### Full site Livewire component
-If you want to use the datatable component without creating an extra blade file you can use our livewire component helper to output the datatable with
-an existing layout file.
+### General tooling
+For information of the general tooling around this package (e.g. full component rendering, CSP support, ...) please consult the core package documentation under: https://github.com/nodus-it/livewire-core
 
-1. Include the `SupportsLivewire` Trait in your Controller
-2. Use and return the `livewire` function at the end of your Controller function
+### The ``DataTable`` component
+Todo
 
-```php
-function index(){
-    return $this->livewire(UserListView::class);
-}
-```
+### The ``ConfirmModal`` component
+Add the confirm-modal component to your layout at entrance level of your documents body.
+````html
+<body>
+    <!-- Much content... -->
+    
+    <livewire:livewire-datatables.confirm-modal/>
+</body>
+````
+Now you're already good to go for the confirmation buttons of your datatables.
 
-2.1 If you want to change the layout or section name use the fallowing functions
-
-```php
-function index(){
-    return $this->livewire(UserListView::class)->layout('myfolder.layoutName')->section('myContentSection');
-}
-```
-
-**Default Layout:** layouts.app
-
-**Default Section:** content
-
-2.2 To add additional parameters to the layout blade, you can use the second parameter of the `livewire` function
-
-### Embedded livewire component
-If you want to create your own blade file and use datatables inline, you can just use the default livewire commands
-
-```php
-@livewire('livewire-componenent-name')
-```
+Furthermore, it's possible to use the confirm-modal component from outside the datatable aswell. You simply need to emit the ``confirm:show`` event:
+````html
+wire:click="$emit('confirm:show', 'route.name')"
+````
+With the third parameter it is possible to customize the modal texts and colors. For further details take a look inside the ``ConfirmModal`` class.
 
 ## Roadmap
 - Support for search keys through multiple relations
