@@ -436,13 +436,17 @@ abstract class DataTable extends Component
         .nodus-table-pagination-change .custom-select {
             max-width: 100px;
         }
-    
+
         .nodus-table-simple-scopes .custom-select {
             max-width: 300px;
         }
-    
+
         .nodus-table-search .form-control {
             max-width: 300px;
+        }
+
+        .nodus-table-disabled {
+            pointer-events: none;
         }
 CSS;
     }

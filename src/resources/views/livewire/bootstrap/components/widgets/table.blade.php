@@ -3,7 +3,9 @@
         <thead>
             <tr>
             @foreach($columns as $column)
-                <th class="border-top-0 {{$column->getClasses()}}" role="button" wire:click="changeSort('{{$column->getId()}}')">
+                <th class="border-top-0 {{$column->getClasses()}}" role="button"
+                    wire:loading.class="nodus-table-disabled"
+                    wire:click="changeSort('{{$column->getId()}}')">
                     {{$column->getLabel()}}
                     @include($themePath . '.components.widgets.sorting')
                 </th>

@@ -3,7 +3,8 @@
 return [
     'table'      => [
         'actions' => 'Aktionen',
-        'empty'   => 'There are no records available ...'
+        'empty'   => 'There are no records available ...',
+        'loading' => 'Loading items...'
     ],
     'search'     => [
         'placeholder' => 'Search...',
