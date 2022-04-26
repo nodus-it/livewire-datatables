@@ -27,6 +27,13 @@ class TestCase extends \Orchestra\Testbench\TestCase
                 return 'user.detais:' . $id;
             }
         )->name('users.details');
+
+        Route::get(
+            'post/{id}',
+            function ($id) {
+                return 'user.detais:' . $id;
+            }
+        )->name('post.details');
     }
 
     protected function getPackageProviders($app)

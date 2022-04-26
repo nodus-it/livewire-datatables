@@ -34,6 +34,9 @@ class ColumnTest extends TestCase
         $model = new User();
         $column = new Column('methodCall', 'label');
         $this->assertEquals('methodCallResult', $column->getValues($model));
+        $column = new Column('post.x', '');
+        $this->assertEmpty($column->getValues($model));
+
     }
 
     public function testRelationMethod()

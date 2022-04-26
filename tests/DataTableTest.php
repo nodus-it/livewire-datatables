@@ -75,6 +75,7 @@ class DataTableTest extends TestCase
                 );
             }
         }
+
     }
 
     public function testSessionRead()

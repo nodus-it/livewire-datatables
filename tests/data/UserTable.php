@@ -8,7 +8,7 @@ class UserTable extends DataTable
 {
     protected function columns()
     {
-        $this->addColumn('first_name');
+        $this->addColumn('first_name')->setSearchKeys('posts.id');
         $this->addColumn('last_name');
         $this->addColumn('email');
         $this->addColumn(

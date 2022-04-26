@@ -3,6 +3,7 @@
 namespace Nodus\Packages\LivewireDatatables\Tests;
 
 use Nodus\Packages\LivewireDatatables\Services\Button;
+use Nodus\Packages\LivewireDatatables\Tests\data\models\Post;
 use Nodus\Packages\LivewireDatatables\Tests\data\models\User;
 
 class ButtonTest extends TestCase
@@ -24,6 +25,13 @@ class ButtonTest extends TestCase
         $user = User::factory()->make();
         $button = new Button('Details', 'users.details', ['id' => '5']);
         $this->assertEquals('http://localhost/user/5', $button->getRoute($user));
+    }
+
+    public function testDynamicRouteParameter()
+    {
+        $user = Post::factory()->create(['id' => 12345, 'user_id' => User::factory()->create(['id' => 98765])->id]);
+        $button = new Button('Details', 'post.details', ['id' => ':user.id']);
+        $this->assertEquals('http://localhost/post/98765', $button->getRoute($user));
     }
 
     public function testLinkTarget()
@@ -58,5 +66,17 @@ class ButtonTest extends TestCase
         $button = new Button('Details', 'users.details', ['id' => '5']);
         $button->setConfirmation('a', 'b', 'c', 'd');
         $this->assertEquals(['message' => 'a', 'title' => 'b', 'confirm' => 'c', 'abort' => 'd'], $button->getConfirmation());
+        $this->assertTrue($button->isConfirmationButton());
+    }
+
+    public function testCondition()
+    {
+        $button = new Button('Deails', 'user.details', ['id' => 5]);
+        $button->setCondition(function ($a) {
+            return $a->name == 'Max';
+        });
+
+        $this->assertTrue($button->isAllowedToRender(new User(['name' => 'Max'])));
+        $this->assertFalse($button->isAllowedToRender(new User(['name' => 'Mustermann'])));
     }
 }

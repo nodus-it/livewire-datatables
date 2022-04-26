@@ -2,7 +2,7 @@
     <td class="align-middle py-2">
         <div class="btn-group" role="group">
             @foreach($buttons as $button)
-                @if($button->getDisplayButton($item))
+                @if($button->isAllowedToRender($item))
                     @if(!empty($button->getConfirmation()))
                         <a href="#{{\Illuminate\Support\Str::slug($button->getLabel().'-'.$item->id)}}" class="trigger-btn {{$button->getClasses() ?? 'btn-sm
                     btn-primary'}}"
