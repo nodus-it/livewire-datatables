@@ -27,12 +27,11 @@ class ButtonTest extends TestCase
         $this->assertEquals('http://localhost/user/5', $button->getRoute($user));
     }
 
-    public function testDynamicRelationRouteParameter()
+    public function testDynamicRouteParameter()
     {
-        $post = Post::factory()->make();
-
-        $button = new Button('Details', 'users.details', ['id' => ':user.id']);
-        $this->assertEquals('http://localhost/user/' . $post->user_id, $button->getRoute($post));
+        $user = Post::factory()->create(['id' => 12345, 'user_id' => User::factory()->create(['id' => 98765])->id]);
+        $button = new Button('Details', 'post.details', ['id' => ':user.id']);
+        $this->assertEquals('http://localhost/post/98765', $button->getRoute($user));
     }
 
     public function testLinkTarget()
