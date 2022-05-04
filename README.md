@@ -63,6 +63,7 @@ With the third parameter it is possible to customize the modal texts and colors.
 - Support for sort keys through relations
 - Advanced scopes
 - More themes (Tailwind3, Bootstrap5)
+- Fix the query rebuilding problem (currently using the IDs array) by using EloquentBuilder serialization
 
 ## Testing
 ````
