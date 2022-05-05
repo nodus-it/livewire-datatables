@@ -135,7 +135,7 @@ abstract class DataTable extends Component
     /**
      * Available columns
      *
-     * @var array
+     * @var array|Column[]
      */
     private array $columns = [];
 
@@ -193,7 +193,7 @@ abstract class DataTable extends Component
     }
 
     /**
-     * Prefixes the column with the underlaying database table
+     * Prefixes the column with the underlying database table
      *
      * @return string
      */
@@ -270,6 +270,10 @@ abstract class DataTable extends Component
             $builder->where(
                 function (Builder $builder) {
                     foreach ($this->columns as $column) {
+                        if (!$column->isSearchEnabled()) {
+                            continue;
+                        }
+
                         foreach ($column->getSearchKeys() as $searchKey) {
                             if (Str::contains($searchKey, '.')) {
                                 // Relation table search
@@ -531,6 +535,9 @@ CSS;
             }
         }
 
+        /**
+         * @var Column $column
+         */
         $column = new $this->columnClass($values, $label);
         $column->checkForAutoDisableSortAndSearch($this->resultModel);
 

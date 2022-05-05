@@ -48,16 +48,16 @@ class Column
     /**
      * Keys for sorting
      *
-     * @var array
+     * @var array|null
      */
-    protected array $sortKeys = [];
+    protected ?array $sortKeys = [];
 
     /**
      * Keys for searching
      *
-     * @var array
+     * @var array|null
      */
-    protected array $searchKeys = [];
+    protected ?array $searchKeys = [];
 
     /**
      * Flag for enabling/disabling html output
@@ -98,20 +98,22 @@ class Column
         $this->id = $label;
         $this->values = Arr::wrap($values);
         $this->label = $label;
-        $this->sortKeys = $this->values;
-        $this->searchKeys = $this->values;
+
+        if (!$values instanceof Closure) {
+            $this->setSortAndSearchKeys($this->values);
+        }
     }
 
     /**
      * Sets the search keys for this column
      *
-     * @param array|string $keys
+     * @param array|string|null $keys
      *
      * @return Column
      */
-    public function setSearchKeys($keys)
+    public function setSearchKeys(array|string|null $keys): static
     {
-        $this->searchKeys = Arr::wrap($keys);
+        $this->searchKeys = ($keys === null) ? null : Arr::wrap($keys);
 
         return $this;
     }
@@ -119,13 +121,13 @@ class Column
     /**
      * Sets the sort keys for this column
      *
-     * @param array|string $keys
+     * @param array|string|null $keys
      *
      * @return Column
      */
-    public function setSortKeys($keys)
+    public function setSortKeys(array|string|null $keys): static
     {
-        $this->sortKeys = Arr::wrap($keys);
+        $this->sortKeys = ($keys === null) ? null : Arr::wrap($keys);
 
         return $this;
     }
@@ -133,14 +135,14 @@ class Column
     /**
      * Sets the sort and search keys for this column
      *
-     * @param array|string $keys
+     * @param array|string|null $keys
      *
      * @return $this
      */
-    public function setSortAndSearchKeys($keys)
+    public function setSortAndSearchKeys(array|string|null $keys): static
     {
-        $this->sortKeys = Arr::wrap($keys);
-        $this->searchKeys = Arr::wrap($keys);
+        $this->setSortKeys($keys);
+        $this->setSearchKeys($keys);
 
         return $this;
     }
@@ -152,7 +154,7 @@ class Column
      *
      * @return bool
      */
-    public function checkForAutoDisableSortAndSearch(string $model)
+    public function checkForAutoDisableSortAndSearch(string $model): bool
     {
         foreach ($this->values as $value) {
             if ($value instanceof Closure || method_exists(new $model(), $value)) {
@@ -172,7 +174,7 @@ class Column
      *
      * @return Column
      */
-    public function enableHtml(bool $html = true)
+    public function enableHtml(bool $html = true): static
     {
         $this->html = $html;
 
@@ -186,7 +188,7 @@ class Column
      *
      * @return Column
      */
-    public function setBreakpoint(int $breakpoint)
+    public function setBreakpoint(int $breakpoint): static
     {
         $this->breakpoint = $breakpoint;
 
@@ -203,7 +205,7 @@ class Column
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -213,7 +215,7 @@ class Column
      *
      * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return trans($this->label);
     }
@@ -225,7 +227,7 @@ class Column
      *
      * @return string
      */
-    public function getValues(Model $item)
+    public function getValues(Model $item): string
     {
         $results = [];
         foreach ($this->values as $value) {
@@ -240,9 +242,19 @@ class Column
      *
      * @return array
      */
-    public function getSortKeys()
+    public function getSortKeys(): array
     {
-        return $this->sortKeys;
+        return $this->sortKeys ?? [];
+    }
+
+    /**
+     * Returns if the sort function is enabled for this column
+     *
+     * @return bool
+     */
+    public function isSortEnabled(): bool
+    {
+        return $this->sortKeys !== null;
     }
 
     /**
@@ -250,9 +262,19 @@ class Column
      *
      * @return array
      */
-    public function getSearchKeys()
+    public function getSearchKeys(): array
     {
-        return $this->searchKeys;
+        return $this->searchKeys ?? [];
+    }
+
+    /**
+     * Returns if the search is enabled for this column
+     *
+     * @return bool
+     */
+    public function isSearchEnabled(): bool
+    {
+        return $this->searchKeys !== null;
     }
 
     /**
@@ -260,7 +282,7 @@ class Column
      *
      * @return bool
      */
-    public function isHtmlEnabled()
+    public function isHtmlEnabled(): bool
     {
         return $this->html;
     }
@@ -291,14 +313,18 @@ class Column
                 break;
             }
 
-            if (method_exists($var, $v)) {
-                if (!is_a($var->$v(), Relation::class)) {
-                    $var = $var->$v();
+            if (is_array($var)) {
+                $var = $var[$v] ?? null;
+            } elseif (is_object($var)) {
+                if (method_exists($var, $v)) {
+                    if (!is_a($var->$v(), Relation::class)) {
+                        $var = $var->$v();
+                    } else {
+                        $var = $var->$v;
+                    }
                 } else {
                     $var = $var->$v;
                 }
-            } else {
-                $var = $var->$v;
             }
         }
 
@@ -371,7 +397,7 @@ class Column
      *
      * @return string
      */
-    public function getClasses()
+    public function getClasses(): string
     {
         $classes = [];
         if ($this->breakpoint != 0) {
@@ -391,7 +417,7 @@ class Column
      *
      * @return Column
      */
-    public function setDataTypeDate()
+    public function setDataTypeDate(): static
     {
         $this->datatype = 'date';
 
@@ -403,7 +429,7 @@ class Column
      *
      * @return Column
      */
-    public function setDataTypeDateTime()
+    public function setDataTypeDateTime(): static
     {
         $this->datatype = 'datetime';
 
@@ -415,7 +441,7 @@ class Column
      *
      * @return Column
      */
-    public function setDataTypeTime()
+    public function setDataTypeTime(): static
     {
         $this->datatype = 'time';
 
@@ -427,7 +453,7 @@ class Column
      *
      * @return Column
      */
-    public function setDataTypeBool()
+    public function setDataTypeBool(): static
     {
         $this->enableHtml();
         $this->datatype = 'bool';
@@ -443,7 +469,7 @@ class Column
      * @throws Exception
      * @return $this
      */
-    public function setDataTypeCustom(string $dataType)
+    public function setDataTypeCustom(string $dataType): static
     {
         if (!array_key_exists($dataType, self::$customDataTypes)) {
             throw new Exception('Custom datatype "' . $dataType . '" not found!');
@@ -471,12 +497,12 @@ class Column
     }
 
     /**
-     * Adds an custom data type to column class
+     * Adds a custom data type to column class
      *
      * @param string  $name    Name
      * @param Closure $closure Custom Data Type Closure
      */
-    public static function addCustomDataType(string $name, Closure $closure)
+    public static function addCustomDataType(string $name, Closure $closure): void
     {
         self::$customDataTypes[ $name ] = $closure;
     }
