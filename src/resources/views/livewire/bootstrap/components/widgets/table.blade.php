@@ -14,7 +14,7 @@
                 </th>
             @endforeach
             @if(count($buttons) > 0)
-                <th class="border-top-0" role="button">
+                <th class="border-top-0">
                     @lang('nodus.packages.livewire-datatables::datatable.table.actions')
                 </th>
             @endif
