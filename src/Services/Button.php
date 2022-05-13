@@ -92,7 +92,7 @@ class Button
     protected ?Closure $condition = null;
 
     /**
-     * Creates an new scope object
+     * Creates a new scope object
      *
      * @param string $label          Scope label
      * @param string $route          Route name
@@ -113,7 +113,7 @@ class Button
      *
      * @return Button
      */
-    public function setTarget(string $target)
+    public function setTarget(string $target): static
     {
         $this->target = $target;
 
@@ -128,7 +128,7 @@ class Button
      *
      * @return Button
      */
-    public function setIcon(string $icon, bool $showIconOnly = true)
+    public function setIcon(string $icon, bool $showIconOnly = true): static
     {
         $this->icon = $icon;
         $this->renderMode = ($showIconOnly) ? self::RENDER_MODE_ICON : self::RENDER_MODE_ICON_LABEL;
@@ -143,7 +143,7 @@ class Button
      *
      * @return static
      */
-    public function setClasses($classes)
+    public function setClasses(array|string $classes): static
     {
         $this->classes = Arr::wrap($classes);
 
@@ -161,7 +161,7 @@ class Button
      *
      * @return static
      */
-    public function setConfirmation(string $text = null, string $title = null, string $confirm = null, string $cancel = null, string $context = null)
+    public function setConfirmation(string $text = null, string $title = null, string $confirm = null, string $cancel = null, string $context = null): static
     {
         // todo refactoring: maybe use extra ConfirmButton class instead
         $this->confirmation = [
@@ -195,10 +195,14 @@ class Button
      * Sets a condition for displaying the button
      *
      * @param Closure $closure
+     *
+     * @return Button
      */
-    public function setCondition(Closure $closure)
+    public function setCondition(Closure $closure): static
     {
         $this->condition = $closure;
+
+        return $this;
     }
 
 
@@ -211,7 +215,7 @@ class Button
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -221,7 +225,7 @@ class Button
      *
      * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return trans($this->label);
     }
@@ -233,7 +237,7 @@ class Button
      *
      * @return string URL
      */
-    public function getRoute(Model $model)
+    public function getRoute(Model $model): string
     {
         $parameter = [];
 
@@ -263,7 +267,7 @@ class Button
      *
      * @return string Target
      */
-    public function getTarget()
+    public function getTarget(): string
     {
         return $this->target;
     }
@@ -273,7 +277,7 @@ class Button
      *
      * @return string|null
      */
-    public function getIcon()
+    public function getIcon(): ?string
     {
         return $this->icon;
     }
@@ -283,7 +287,7 @@ class Button
      *
      * @return int
      */
-    public function getRenderMode()
+    public function getRenderMode(): int
     {
         return $this->renderMode;
     }
@@ -291,9 +295,9 @@ class Button
     /**
      * Returns the custom button classes
      *
-     * @return string
+     * @return string|null
      */
-    public function getClasses()
+    public function getClasses(): ?string
     {
         if (count($this->classes) == 0) {
             return null;
@@ -307,7 +311,7 @@ class Button
      *
      * @return array
      */
-    public function getConfirmation()
+    public function getConfirmation(): array
     {
         return $this->confirmation;
     }
@@ -317,7 +321,7 @@ class Button
      *
      * @return bool
      */
-    public function isConfirmationButton()
+    public function isConfirmationButton(): bool
     {
         return !empty($this->confirmation);
     }
@@ -327,9 +331,9 @@ class Button
      *
      * @param Model $item
      *
-     * @return bool|mixed
+     * @return bool
      */
-    public function isAllowedToRender(Model $item)
+    public function isAllowedToRender(Model $item): bool
     {
         if (!is_callable($this->condition)) {
             return true;
