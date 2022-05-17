@@ -53,9 +53,16 @@ Add the confirm-modal component to your layout at entrance level of your documen
 Now you're already good to go for the confirmation buttons of your datatables.
 
 Furthermore, it's possible to use the confirm-modal component from outside the datatable aswell. You simply need to emit the ``confirm:show`` event:
+
+**In livewire components:**
 ````html
-wire:click="$emit('confirm:show', 'route.name')"
+wire:click="$emit('confirm:show', 'url')"
 ````
+**Out of livewire components:**
+````html
+onClick="Livewire.emit('confirm:show', 'url')"
+````
+
 With the third parameter it is possible to customize the modal texts and colors. For further details take a look inside the ``ConfirmModal`` class.
 
 ## Roadmap
