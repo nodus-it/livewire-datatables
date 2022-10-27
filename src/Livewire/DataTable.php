@@ -271,12 +271,12 @@ abstract class DataTable extends Component
                 'simpleScopes' => $this->simpleScopes,
                 'buttons'      => $this->buttons,
                 'themePath'    => $themePath,
-                'show' => (object)[
-                    'simpleScopes' => $this->showSimpleScopes,
-                    'search'       => $this->showSearch,
-                    'counter'      => $this->showCounter,
-                    'pagination'   => $this->showPagination,
-                    'pageLength'   => $this->showPageLength,
+                'show'         => (object)[
+                    'scopes'     => $this->showSimpleScopes,
+                    'search'     => $this->showSearch,
+                    'counter'    => $this->showCounter,
+                    'pagination' => $this->showPagination,
+                    'pageLength' => $this->showPageLength,
                 ]
             ]
         );
