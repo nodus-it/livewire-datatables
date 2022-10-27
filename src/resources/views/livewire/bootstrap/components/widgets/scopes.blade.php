@@ -1,4 +1,4 @@
-@if(count($simpleScopes) > 0)
+@if(count($simpleScopes) > 0 && $show->scopes)
     <div class="nodus-table-simple-scopes">
         <select wire:model="simpleScope" class="custom-select custom-select-sm">
             <option value="">

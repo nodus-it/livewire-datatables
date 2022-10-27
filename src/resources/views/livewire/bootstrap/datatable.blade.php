@@ -18,7 +18,9 @@
         </div>
         <div class="col-lg-6 col-12 order-first order-lg-2 text-center">
             <div class="nodus-table-pagination d-inline-block" wire:loading.class="nodus-table-disabled">
-                {{$results->links()}}
+                @if($show->pagination === true)
+                    {{$results->links()}}
+                @endif
             </div>
         </div>
         <div class="col-lg-3 col-5 order-last text-right">

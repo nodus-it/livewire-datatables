@@ -1,4 +1,5 @@
-<div class="nodus-table-counter" >
+@if($show->counter === true)
+<div class="nodus-table-counter">
     <span wire:loading.remove>
         @lang('nodus.packages.livewire-datatables::datatable.pagination.count', [
             'first_item'=>$results->firstItem() ?? 0,
@@ -10,4 +11,4 @@
         <i class="far fa-fw fa-spinner fa-spin"></i> @lang('nodus.packages.livewire-datatables::datatable.table.loading')
     </span>
 </div>
-
+@endif

@@ -161,6 +161,41 @@ abstract class DataTable extends Component
     protected $builder = null;
 
     /**
+     * Flag to enable/disable the simple scope UI widget
+     *
+     * @var bool
+     */
+    public bool $showSimpleScopes = true;
+
+    /**
+     * Flag to enable/disable the search UI widget
+     *
+     * @var bool
+     */
+    public bool $showSearch = true;
+
+    /**
+     * Flag to enable/disable the counter UI widget
+     *
+     * @var bool
+     */
+    public bool $showCounter = true;
+
+    /**
+     * Flag to enable/disable the pagination UI widget
+     *
+     * @var bool
+     */
+    public bool $showPagination = true;
+
+    /**
+     * Flag to enable/disable the page length UI widget
+     *
+     * @var bool
+     */
+    public bool $showPageLength = true;
+
+    /**
      * DataTable constructor.
      *
      * @param null $id
@@ -236,6 +271,13 @@ abstract class DataTable extends Component
                 'simpleScopes' => $this->simpleScopes,
                 'buttons'      => $this->buttons,
                 'themePath'    => $themePath,
+                'show' => (object)[
+                    'simpleScopes' => $this->showSimpleScopes,
+                    'search'       => $this->showSearch,
+                    'counter'      => $this->showCounter,
+                    'pagination'   => $this->showPagination,
+                    'pageLength'   => $this->showPageLength,
+                ]
             ]
         );
     }
