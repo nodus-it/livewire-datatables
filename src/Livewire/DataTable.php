@@ -230,9 +230,11 @@ abstract class DataTable extends Component
     /**
      * Prefixes the column with the underlying database table
      *
+     * @param string $column
+     *
      * @return string
      */
-    public function prefixCol(string $column)
+    public function prefixCol(string $column): string
     {
         return $this->getBuilder()->getModel()->getTable() . '.' . $column;
     }
@@ -465,7 +467,7 @@ abstract class DataTable extends Component
      *
      * @return string
      */
-    protected function getThemePath()
+    protected function getThemePath(): string
     {
         return 'nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme');
     }
@@ -475,7 +477,7 @@ abstract class DataTable extends Component
      *
      * @return string
      */
-    public static function styles()
+    public static function styles(): string
     {
         return <<<CSS
         /** Livewire datatable styles **/
@@ -502,7 +504,7 @@ CSS;
      *
      * @return string
      */
-    protected function getSessionMetaDataKey()
+    protected function getSessionMetaDataKey(): string
     {
         return self::SESSION_KEY_META_DATA . '.' . get_class($this);
     }
@@ -512,7 +514,7 @@ CSS;
      *
      * @return void
      */
-    protected function writeSessionMetaData()
+    protected function writeSessionMetaData(): void
     {
         session()->put($this->getSessionMetaDataKey(), [
             'paginate'      => $this->paginate,
@@ -530,7 +532,7 @@ CSS;
      * @throws NotFoundExceptionInterface
      * @return bool
      */
-    protected function readSessionMetaData()
+    protected function readSessionMetaData(): bool
     {
         if (!session()->exists($this->getSessionMetaDataKey())) {
             return false;
@@ -561,13 +563,12 @@ CSS;
     /**
      * Add a column to datatable
      *
-     * @param string|array|Closure $values Values for column
+     * @param array|Closure|string $values Values for column
      * @param string|null          $label  Label for column
      *
-     * @throws Exception
      * @return Column
      */
-    protected function addColumn($values, string $label = null)
+    protected function addColumn(array|Closure|string $values, string $label = null)
     {
         if ($label == null) {
             if ($values instanceof Closure) {
