@@ -196,6 +196,13 @@ abstract class DataTable extends Component
     public bool $showPageLength = true;
 
     /**
+     * Suffix for the session key
+     *
+     * @var string|null
+     */
+    public ?string $sessionKeySuffix = null;
+
+    /**
      * DataTable constructor.
      *
      * @param null $id
@@ -215,7 +222,7 @@ abstract class DataTable extends Component
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function mount($builder)
+    public function mount($builder, ?string $sessionKeySuffix = null)
     {
         $this->resultModel = get_class($builder->getModel());
         $this->resultIds = $builder->pluck($this->prefixCol('id'))->toArray();
@@ -223,6 +230,7 @@ abstract class DataTable extends Component
         $this->resultWithoutGlobalScope = $builder->removedScopes();
 
         $this->builder = $builder;
+        $this->sessionKeySuffix = $sessionKeySuffix;
 
         $this->readSessionMetaData();
     }
@@ -506,7 +514,13 @@ CSS;
      */
     protected function getSessionMetaDataKey(): string
     {
-        return self::SESSION_KEY_META_DATA . '.' . get_class($this);
+        $sessionKey = self::SESSION_KEY_META_DATA . '.' . get_class($this);
+
+        if ($this->sessionKeySuffix !== null) {
+            $sessionKey .= '-' . $this->sessionKeySuffix;
+        }
+
+        return $sessionKey;
     }
 
     /**
