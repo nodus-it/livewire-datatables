@@ -89,7 +89,7 @@ class ConfirmModal extends Component
         $this->title = $options[ 'title' ] ?? $prefix . 'title';
         $this->text = $options[ 'text' ] ?? $prefix . 'text';
         $this->confirmButton = $options[ 'confirm' ] ?? $prefix . 'button_confirm';
-        $this->cancelButton = $options[ 'cancel' ] ?? $prefix . 'button_confirm';
+        $this->cancelButton = $options[ 'cancel' ] ?? $prefix . 'button_cancel';
 
         if (isset($options[ 'context' ])) {
             $this->context = $options[ 'context' ];
