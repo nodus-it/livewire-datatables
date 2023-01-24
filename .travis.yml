@@ -5,6 +5,10 @@ php:
   - 8.1
   - 8.2
 
+install:
+  # Fix PHP 8.2 error
+  - if [[ $TRAVIS_PHP_VERSION = '8.2' ]]; then sudo apt update && sudo apt-get install libonig2 libonig-dev; fi
+
 dist: bionic
 
 before_script:
