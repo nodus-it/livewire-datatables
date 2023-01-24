@@ -34,7 +34,7 @@ class SimpleScope
     protected string $scope = '';
 
     /**
-     * Creates an new scope object
+     * Creates a new scope object
      *
      * @param string $scope Scope name
      * @param string $label Scope label
@@ -54,12 +54,14 @@ class SimpleScope
      * @return Builder Builder
      * @throws Exception
      */
-    public function addScope(Builder $builder)
+    public function addScope(Builder $builder): Builder
     {
         $model = $builder->getModel();
+
         if (!$builder->hasNamedScope($this->scope)) {
             throw new Exception('Scope "' . $this->scope . '" not found in model ' . $model);
         }
+
         $builder->{$this->scope}();
 
         return $builder;
@@ -75,7 +77,7 @@ class SimpleScope
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -85,7 +87,7 @@ class SimpleScope
      *
      * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return trans($this->label);
     }

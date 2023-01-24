@@ -76,8 +76,10 @@ class ConfirmModal extends Component
      *
      * @param string $url
      * @param array  $options
+     *
+     * @return void
      */
-    public function open(string $url, array $options = [])
+    public function open(string $url, array $options = []): void
     {
         if ($this->isOpen) {
             $this->close();
@@ -100,8 +102,10 @@ class ConfirmModal extends Component
 
     /**
      * Closes the confirmation modal
+     *
+     * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->isOpen = false;
 
@@ -113,7 +117,7 @@ class ConfirmModal extends Component
      *
      * @return View
      */
-    public function render()
+    public function render(): View
     {
         return view('nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme') . '.confirm_modal');
     }
@@ -123,7 +127,7 @@ class ConfirmModal extends Component
      *
      * @return string
      */
-    public static function styles()
+    public static function styles(): string
     {
         return <<<CSS
         /** Livewire confirm modal styles **/

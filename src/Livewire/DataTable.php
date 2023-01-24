@@ -217,12 +217,14 @@ abstract class DataTable extends Component
     /**
      * On mount handler
      *
-     * @param Builder $builder
+     * @param Builder     $builder
+     * @param string|null $sessionKeySuffix
      *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @return void
      */
-    public function mount($builder, ?string $sessionKeySuffix = null)
+    public function mount($builder, ?string $sessionKeySuffix = null): void
     {
         $this->resultModel = get_class($builder->getModel());
         $this->resultIds = $builder->pluck($this->prefixCol('id'))->toArray();
@@ -400,7 +402,7 @@ abstract class DataTable extends Component
      *
      * @param string $key Column key
      */
-    public function changeSort(string $key)
+    public function changeSort(string $key): void
     {
         if ($this->sort == $key) {
             if ($this->sortDirection == 'ASC') {
@@ -417,7 +419,7 @@ abstract class DataTable extends Component
     /**
      * Reset's the pagination after changing the number of results
      */
-    public function updatingPaginate()
+    public function updatingPaginate(): void
     {
         $this->resetPage();
     }
@@ -425,7 +427,7 @@ abstract class DataTable extends Component
     /**
      * Reset's the pagination after changing the search
      */
-    public function updatingSearch()
+    public function updatingSearch(): void
     {
         $this->resetPage();
     }
