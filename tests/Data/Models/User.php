@@ -1,12 +1,12 @@
 <?php
 
-namespace Nodus\Packages\LivewireDatatables\Tests\data\models;
+namespace Nodus\Packages\LivewireDatatables\Tests\Data\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Nodus\Packages\LivewireDatatables\Tests\data\database\factories\UserFactory;
+use Nodus\Packages\LivewireDatatables\Tests\Data\database\Factories\UserFactory;
 
 class User extends Model
 {

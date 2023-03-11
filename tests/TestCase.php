@@ -11,29 +11,20 @@ class TestCase extends \Orchestra\Testbench\TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(__DIR__ . '/data/database/migrations');
-        $this->withFactories(__DIR__ . '/data/database/factories');
+        $this->loadMigrationsFrom(__DIR__ . '/Data/Database/Migrations');
+        $this->withFactories(__DIR__ . '/Data/Database/Factories');
 
         /**
          * Fake Routes
          */
-        Route::get(
-            'user/{id}',
-            function ($id) {
-                return 'user.detais:' . $id;
-            }
-        )->name('users.details');
-
-        Route::get(
-            'post/{id}',
-            function ($id) {
-                return 'user.detais:' . $id;
-            }
-        )->name('post.details');
+        Route::get('user/{id}', fn ($id) => 'users.show: ' . $id)
+            ->name('users.show');
+        Route::get('post/{id}', fn ($id) => 'posts.show: ' . $id)
+            ->name('posts.show');
     }
 
     protected function getPackageProviders($app)
@@ -46,17 +37,14 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     public function getEnvironmentSetUp($app)
     {
-        $app[ 'config' ]->set('app.key', 'AckfSECXIvnK5r28GVIWUAxmbBSjTsmF');
-        $app[ 'config' ]->set('app.locale', 'ab'); // Fake for getting translation strings
-        $app[ 'config' ]->set('app.fallback_locale', 'ab'); // Fake for getting translation strings
-        $app[ 'config' ]->set('database.default', 'sqlite');
-        $app[ 'config' ]->set(
-            'database.connections.sqlite',
-            [
-                'driver'   => 'sqlite',
-                'database' => ':memory:',
-                'prefix'   => '',
-            ]
-        );
+        $app['config']->set('app.key', 'AckfSECXIvnK5r28GVIWUAxmbBSjTsmF');
+        $app['config']->set('app.locale', 'ab'); // Fake for getting translation strings
+        $app['config']->set('app.fallback_locale', 'ab'); // Fake for getting translation strings
+        $app['config']->set('database.default', 'sqlite');
+        $app['config']->set('database.connections.sqlite', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ]);
     }
 }

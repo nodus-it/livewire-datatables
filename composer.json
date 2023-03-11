@@ -22,10 +22,11 @@
     "nodus-it/livewire-core": "0.2.*"
   },
   "require-dev": {
-    "orchestra/testbench": "^7.0",
-    "phpunit/phpunit": "^9.4",
+    "pestphp/pest": "^2.0",
+    "orchestra/testbench": "^8.0",
     "laravel/legacy-factories": "^1.0.4",
-    "sempro/phpunit-pretty-print": "^1.4"
+    "pestphp/pest-plugin-livewire": "2.x-dev",
+    "pestphp/pest-plugin-laravel": "2.x-dev"
   },
   "autoload": {
     "psr-4": {
@@ -38,14 +39,21 @@
     }
   },
   "scripts": {
-    "test": "vendor/bin/phpunit",
-    "test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html coverage"
+    "test": "vendor/bin/pest",
+    "test-coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage --coverage-html coverage"
   },
   "extra": {
     "laravel": {
       "providers": [
         "Nodus\\Packages\\LivewireDatatables\\LivewireDatatablesServiceProvider"
       ]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
     }
   }
 }

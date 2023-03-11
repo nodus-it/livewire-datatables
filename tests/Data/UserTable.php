@@ -1,6 +1,6 @@
 <?php
 
-namespace Nodus\Packages\LivewireDatatables\Tests\data;
+namespace Nodus\Packages\LivewireDatatables\Tests\Data;
 
 use Nodus\Packages\LivewireDatatables\Livewire\DataTable;
 
@@ -27,6 +27,6 @@ class UserTable extends DataTable
 
     protected function buttons()
     {
-        $this->addButton('details-button', 'users.details', ['id' => ':id']);
+        $this->addButton('details-button', 'users.show', ['id' => ':id']);
     }
 }
