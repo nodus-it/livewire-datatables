@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Nodus\Packages\LivewireDatatables\Tests\Data\database\Factories\UserFactory;
+use Nodus\Packages\LivewireDatatables\Tests\Data\Database\Factories\UserFactory;
 
 class User extends Model
 {
