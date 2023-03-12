@@ -57,7 +57,7 @@ it('works with multiple values', function () {
 it('works with closures', function () {
     $user = new User();
     $user->first_name = 'Bastian';
-    $column = new Column(fn($user) => $user->first_name . '-extension', 'label');
+    $column = new Column(fn ($user) => $user->first_name . '-extension', 'label');
     assertEquals('Bastian-extension', $column->getValues($user));
 });
 
@@ -138,7 +138,7 @@ it('supports the bool datatype', function () {
 });
 
 it('supports custom datatypes', function () {
-    Column::addCustomDataType('upper', fn($var) => strtoupper($var));
+    Column::addCustomDataType('upper', fn ($var) => strtoupper($var));
 
     $user = new User();
     $user->name = 'username';

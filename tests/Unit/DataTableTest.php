@@ -9,7 +9,6 @@ use Nodus\Packages\LivewireDatatables\Tests\Data\UserTable;
 use function Pest\Livewire\livewire;
 use function PHPUnit\Framework\assertTrue;
 
-
 it('can be rendered', function () {
     livewire(UserTable::class, ['builder' => User::query()])
         ->assertSee('nodus.packages.livewire-datatables::datatable.pagination.count')

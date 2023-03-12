@@ -1,9 +1,9 @@
-name: Laravel
+name: Unit-Tests
 
 on: [push]
 
 jobs:
-  laravel-tests:
+  pests-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -14,6 +14,6 @@ jobs:
         php-version: ${{ matrix.php-versions }}
     - uses: actions/checkout@v3
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer install --no-ansi --no-interaction --prefer-dist
     - name: Execute tests (Unit and Feature tests) via Pest PHP
       run: vendor/bin/pest
