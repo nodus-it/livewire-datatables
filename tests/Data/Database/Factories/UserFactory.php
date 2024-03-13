@@ -1,9 +1,9 @@
 <?php
 
-namespace Nodus\Packages\LivewireDatatables\Tests\data\database\factories;
+namespace Nodus\Packages\LivewireDatatables\Tests\Data\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Nodus\Packages\LivewireDatatables\Tests\data\models\User;
+use Nodus\Packages\LivewireDatatables\Tests\Data\Models\User;
 
 class UserFactory extends Factory
 {

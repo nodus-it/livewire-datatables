@@ -295,7 +295,7 @@ class Column
      *
      * @return Model|string
      */
-    protected function getValue(Model $item, $value)
+    protected function getValue(Model $item, $value): mixed
     {
         if ($value instanceof Closure) {
             return $value($item);
@@ -338,7 +338,7 @@ class Column
      *
      * @return mixed|string
      */
-    protected function applyDatatype($var)
+    protected function applyDatatype($var): mixed
     {
         switch ($this->datatype) {
             case 'text':
@@ -489,7 +489,7 @@ class Column
      * @throws Exception
      * @return $this
      */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): static
     {
         $dataType = strtolower(str_replace('setDataType', '', $name));
 

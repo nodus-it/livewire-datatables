@@ -1,10 +1,10 @@
 <?php
 
-namespace Nodus\Packages\LivewireDatatables\Tests\data\models;
+namespace Nodus\Packages\LivewireDatatables\Tests\Data\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Nodus\Packages\LivewireDatatables\Tests\data\database\factories\PostFactory;
+use Nodus\Packages\LivewireDatatables\Tests\Data\Database\Factories\PostFactory;
 
 class Post extends Model
 {

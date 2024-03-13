@@ -6,37 +6,34 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Livewire\LivewireServiceProvider;
 use Nodus\Packages\LivewireDatatables\LivewireDatatablesServiceProvider;
+use Orchestra\Testbench\Attributes\WithMigration;
 
+#[WithMigration]
 class TestCase extends \Orchestra\Testbench\TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(__DIR__ . '/data/database/migrations');
-        $this->withFactories(__DIR__ . '/data/database/factories');
+        $this->withFactories(__DIR__ . '/Data/Database/Factories');
 
         /**
          * Fake Routes
          */
-        Route::get(
-            'user/{id}',
-            function ($id) {
-                return 'user.detais:' . $id;
-            }
-        )->name('users.details');
-
-        Route::get(
-            'post/{id}',
-            function ($id) {
-                return 'user.detais:' . $id;
-            }
-        )->name('post.details');
+        Route::get('user/{id}', fn ($id) => 'users.show: ' . $id)
+            ->name('users.show');
+        Route::get('post/{id}', fn ($id) => 'posts.show: ' . $id)
+            ->name('posts.show');
     }
 
-    protected function getPackageProviders($app)
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/Data/Database/Migrations');
+    }
+
+    protected function getPackageProviders($app): array
     {
         return [
             LivewireServiceProvider::class,
@@ -44,19 +41,16 @@ class TestCase extends \Orchestra\Testbench\TestCase
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
-        $app[ 'config' ]->set('app.key', 'AckfSECXIvnK5r28GVIWUAxmbBSjTsmF');
-        $app[ 'config' ]->set('app.locale', 'ab'); // Fake for getting translation strings
-        $app[ 'config' ]->set('app.fallback_locale', 'ab'); // Fake for getting translation strings
-        $app[ 'config' ]->set('database.default', 'sqlite');
-        $app[ 'config' ]->set(
-            'database.connections.sqlite',
-            [
-                'driver'   => 'sqlite',
-                'database' => ':memory:',
-                'prefix'   => '',
-            ]
-        );
+        $app['config']->set('app.key', 'AckfSECXIvnK5r28GVIWUAxmbBSjTsmF');
+        $app['config']->set('app.locale', 'ab'); // Fake for getting translation strings
+        $app['config']->set('app.fallback_locale', 'ab'); // Fake for getting translation strings
+        $app['config']->set('database.default', 'sqlite');
+        $app['config']->set('database.connections.sqlite', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ]);
     }
 }
