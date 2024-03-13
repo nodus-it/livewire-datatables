@@ -6,7 +6,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Livewire\LivewireServiceProvider;
 use Nodus\Packages\LivewireDatatables\LivewireDatatablesServiceProvider;
+use Orchestra\Testbench\Attributes\WithMigration;
 
+#[WithMigration]
 class TestCase extends \Orchestra\Testbench\TestCase
 {
     use RefreshDatabase;
@@ -15,7 +17,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(__DIR__ . '/Data/Database/Migrations');
         $this->withFactories(__DIR__ . '/Data/Database/Factories');
 
         /**
@@ -27,7 +28,12 @@ class TestCase extends \Orchestra\Testbench\TestCase
             ->name('posts.show');
     }
 
-    protected function getPackageProviders($app)
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/Data/Database/Migrations');
+    }
+
+    protected function getPackageProviders($app): array
     {
         return [
             LivewireServiceProvider::class,
@@ -35,7 +41,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
         $app['config']->set('app.key', 'AckfSECXIvnK5r28GVIWUAxmbBSjTsmF');
         $app['config']->set('app.locale', 'ab'); // Fake for getting translation strings
