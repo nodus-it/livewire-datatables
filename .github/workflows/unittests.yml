@@ -16,4 +16,8 @@ jobs:
     - name: Install Dependencies
       run: composer install --no-ansi --no-interaction --prefer-dist
     - name: Execute tests (Unit and Feature tests) via Pest PHP
-      run: vendor/bin/pest
+      run: vendor/bin/pest --coverage-cobertura coverage.xml
+    - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV }}
