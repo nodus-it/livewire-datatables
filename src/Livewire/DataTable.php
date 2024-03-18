@@ -323,6 +323,8 @@ abstract class DataTable extends Component
         if (!empty($this->search)) {
             $builder->where(
                 function (Builder $builder) {
+                    $searchTokens = $this->getSearchTokens();
+
                     foreach ($this->columns as $column) {
                         if (!$column->isSearchEnabled()) {
                             continue;
@@ -334,13 +336,17 @@ abstract class DataTable extends Component
                                 [$relation, $relationSearchKey] = explode('.', $searchKey, 2);
                                 $builder->orWhereHas(
                                     $relation,
-                                    function (Builder $b) use ($relationSearchKey) {
-                                        $b->where($relationSearchKey, 'LIKE', '%' . $this->search . '%');
+                                    function (Builder $b) use ($relationSearchKey, $searchTokens) {
+                                        foreach ($searchTokens as $token) {
+                                            $b->where($relationSearchKey, 'LIKE', '%' . $token . '%');
+                                        }
                                     }
                                 );
                             } else {
                                 // Base table search
-                                $builder->orWhere($searchKey, 'LIKE', '%' . $this->search . '%');
+                                foreach ($searchTokens as $token) {
+                                    $builder->orWhere($searchKey, 'LIKE', '%' . $token . '%');
+                                }
                             }
                         }
                     }
@@ -480,6 +486,16 @@ abstract class DataTable extends Component
     protected function getThemePath(): string
     {
         return 'nodus.packages.livewire-datatables::livewire.' . config('livewire-datatables.theme');
+    }
+
+    /**
+     * Returns an array of search tokens
+     *
+     * @return string[]
+     */
+    protected function getSearchTokens()
+    {
+        return explode(' ', trim($this->search));
     }
 
     /**
