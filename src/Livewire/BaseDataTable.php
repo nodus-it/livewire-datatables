@@ -170,14 +170,10 @@ abstract class BaseDataTable extends Component
 
     /**
      * DataTable constructor.
-     *
-     * @param null $id
      */
-    public function __construct($id = null)
+    public function __construct()
     {
         $this->paginationTheme = config('livewire-datatables.theme');
-
-        parent::__construct($id);
     }
 
     /**

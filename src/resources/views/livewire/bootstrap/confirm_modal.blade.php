@@ -8,13 +8,13 @@
                 <h4 class="modal-title w-100">
                     @lang($title)
                 </h4>
-                <button type="button" class="close" wire:click="$emitSelf('confirm:close')" aria-hidden="true">&times;</button>
+                <button type="button" class="close" wire:click="$dispatchSelf('confirm:close')" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
                 <p>@lang($text)</p>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" wire:click="$emitSelf('confirm:close')">
+                <button type="button" class="btn btn-secondary" wire:click="$dispatchSelf('confirm:close')">
                     @lang($cancelButton)
                 </button>
                 <a href="{{$url}}" class="btn btn-{{$context}}">

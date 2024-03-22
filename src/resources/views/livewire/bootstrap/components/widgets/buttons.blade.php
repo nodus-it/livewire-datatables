@@ -7,7 +7,7 @@
                 @endif
 
                 @if($button->isConfirmationButton())
-                    <button wire:click="$emit('confirm:show', '{{$button->getRoute($item)}}', @js($button->getConfirmation()))"
+                    <button wire:click="$dispatch('confirm:show', '{{$button->getRoute($item)}}', @js($button->getConfirmation()))"
                             class="btn trigger-btn {{$button->getClasses() ?? 'btn-sm btn-primary'}}"
                             data-toggle="modal">
                         @include($themePath . '.components.widgets.button_content')

@@ -97,7 +97,7 @@ class ConfirmModal extends Component
             $this->context = $options[ 'context' ];
         }
 
-        $this->emit('confirm:client-show');
+        $this->dispatch('confirm:client-show');
     }
 
     /**
@@ -109,7 +109,7 @@ class ConfirmModal extends Component
     {
         $this->isOpen = false;
 
-        $this->emit('confirm:client-close');
+        $this->dispatch('confirm:client-close');
     }
 
     /**
