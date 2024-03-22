@@ -150,14 +150,14 @@ class Column
     /**
      * Checks if the sort and search handling needs to be auto disabled for that column as default
      *
-     * @param string $model
+     * @param string|null $model
      *
      * @return bool
      */
-    public function checkForAutoDisableSortAndSearch(string $model): bool
+    public function checkForAutoDisableSortAndSearch(?string $model = null): bool
     {
         foreach ($this->values as $value) {
-            if ($value instanceof Closure || method_exists(new $model(), $value)) {
+            if ($value instanceof Closure || ($model !== null && method_exists(new $model(), $value))) {
                 $this->setSortAndSearchKeys(null);
 
                 return true;
@@ -223,11 +223,11 @@ class Column
     /**
      * Returns the resolved values to be displayed
      *
-     * @param Model $item Data Model
+     * @param Model|array $item Data Model
      *
      * @return string
      */
-    public function getValues(Model $item): string
+    public function getValues(Model|array $item): string
     {
         $results = [];
         foreach ($this->values as $value) {
@@ -290,12 +290,12 @@ class Column
     /**
      * Builds the value
      *
-     * @param Model          $item  Data Model
+     * @param Model|array          $item  Data Model
      * @param string|Closure $value value string
      *
      * @return Model|string
      */
-    protected function getValue(Model $item, $value): mixed
+    protected function getValue(Model|array $item, $value): mixed
     {
         if ($value instanceof Closure) {
             return $value($item);
