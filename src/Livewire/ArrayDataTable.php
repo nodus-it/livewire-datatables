@@ -42,6 +42,13 @@ abstract class ArrayDataTable extends BaseDataTable
         $this->readSessionMetaData();
     }
 
+    /**
+     * Sets the raw data
+     *
+     * @param Collection|array $data
+     *
+     * @return $this
+     */
     public function setRawData(Collection|array $data): static
     {
         if ($data instanceof Collection) {
@@ -53,6 +60,11 @@ abstract class ArrayDataTable extends BaseDataTable
         return $this;
     }
 
+    /**
+     * Returns the raw data as collection
+     *
+     * @return Collection
+     */
     public function getRawData(): Collection
     {
         return new Collection($this->rawData);
@@ -68,7 +80,8 @@ abstract class ArrayDataTable extends BaseDataTable
     {
         $this->columns();
         if (method_exists($this, 'scopes')) {
-            $this->scopes();
+            //$this->scopes();
+            throw new Exception('Scopes are not implemented for ArrayDataTable yet.');
         }
         if (method_exists($this, 'buttons')) {
             $this->buttons();
@@ -77,7 +90,7 @@ abstract class ArrayDataTable extends BaseDataTable
         $data = $this->getRawData();
         $themePath = $this->getThemePath();
 
-        $data = $this->applyScopes($data);
+        //$data = $this->applyScopes($data);
         $data = $this->applySearch($data);
         $data = $this->applySort($data);
         $paginator = $this->applyPagination($data);
@@ -106,31 +119,30 @@ abstract class ArrayDataTable extends BaseDataTable
     /**
      * Sets the selected scopes
      *
-     * @param Collection $data
+     * @param Collection $builderOrData
      *
      * @return Collection
      */
-    protected function applyScopes($data)
+    protected function applyScopes($builderOrData)
     {
-        // todo
+        // todo implement scopes?
 
-        return $data;
+        return $builderOrData;
     }
 
     /**
      * Sets the where's for selected search
      *
-     * @param Collection $data
+     * @param Collection $builderOrData
      *
      * @return Collection
      */
-    protected function applySearch($data)
+    protected function applySearch($builderOrData)
     {
         if (!empty($this->search)) {
-           // $searchTokens = $this->getSearchTokens();
-            $token = trim($this->search);
+            $searchTokens = $this->getSearchTokens();
 
-            $data = $data->filter(function ($item) use ($token) {
+            $builderOrData = $builderOrData->filter(function ($item) use ($searchTokens) {
                 $show = false;
 
                 foreach ($this->getColumns() as $column) {
@@ -141,10 +153,11 @@ abstract class ArrayDataTable extends BaseDataTable
                     $keys = $column->getSearchKeys();
 
                     foreach ($keys as $key) {
-                        //dump($item[$key], $token, Str::contains($item[$key], $token));
-                        if (Str::contains($item[$key], $token)) {
-                            $show = true;
-                            break 2;
+                        foreach ($searchTokens as $token) {
+                            if (Str::contains($item[$key], $token)) {
+                                $show = true;
+                                break 3;
+                            }
                         }
                     }
                 }
@@ -154,41 +167,41 @@ abstract class ArrayDataTable extends BaseDataTable
 
         }
 
-        return $data;
+        return $builderOrData;
     }
 
     /**
      * Setts the orderBy for selected column
      *
-     * @param Collection $data
+     * @param Collection $builderOrData
      *
      * @return Collection
      */
-    protected function applySort($data)
+    protected function applySort($builderOrData)
     {
         if (!empty($this->sort)) {
-            $data = $data->sort(function ($a, $b) {
+            $builderOrData = $builderOrData->sort(function ($a, $b) {
                 $dir = $this->sortDirection === 'ASC' ? 1 : -1;
 
                 return $dir * ($a[$this->sort] <=> $b[$this->sort]);
             });
         }
 
-        return $data;
+        return $builderOrData;
     }
 
     /**
      * Sets the limit and the offset
      *
-     * @param Collection $data
+     * @param Collection $builderOrData
      *
      * @return LengthAwarePaginator
      */
-    protected function applyPagination($data)
+    protected function applyPagination($builderOrData)
     {
-        $count = count($data);
+        $count = count($builderOrData);
         $paginator = new LengthAwarePaginator([], $count, $this->paginate, $this->page);
-        $pageData = $data->slice(($this->page - 1) * $this->paginate, $this->paginate);
+        $pageData = $builderOrData->slice(($this->page - 1) * $this->paginate, $this->paginate);
 
         return $paginator
             ->setCollection($pageData)

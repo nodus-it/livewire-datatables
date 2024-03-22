@@ -6,6 +6,7 @@ use Closure;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -185,51 +186,14 @@ abstract class BaseDataTable extends Component
      * @return View
      * @throws Exception
      */
-    public function render()
-    {
-        $this->columns();
-        if (method_exists($this, 'scopes')) {
-            $this->scopes();
-        }
-        if (method_exists($this, 'buttons')) {
-            $this->buttons();
-        }
-
-        $builder = $this->getBuilder();
-        $themePath = $this->getThemePath();
-
-        $this->applyScopes($builder);
-        $this->applySearch($builder);
-        $this->applySort($builder);
-        $paginator = $this->applyPagination($builder);
-
-        $this->writeSessionMetaData();
-
-        return view(
-            $themePath . '.datatable',
-            [
-                'results'      => $paginator,
-                'columns'      => $this->columns,
-                'simpleScopes' => $this->simpleScopes,
-                'buttons'      => $this->buttons,
-                'themePath'    => $themePath,
-                'show'         => (object)[
-                    'scopes'     => $this->showSimpleScopes,
-                    'search'     => $this->showSearch,
-                    'counter'    => $this->showCounter,
-                    'pagination' => $this->showPagination,
-                    'pageLength' => $this->showPageLength,
-                ]
-            ]
-        );
-    }
+    public abstract function render();
 
     /**
      * Sets the selected scopes
      *
-     * @param Builder $builder Builder
+     * @param Builder|Collection $builderOrData
      *
-     * @return Builder Builder
+     * @return Builder|Collection
      * @throws Exception Scope not found in model
      */
     protected abstract function applyScopes($builderOrData);
@@ -237,25 +201,25 @@ abstract class BaseDataTable extends Component
     /**
      * Sets the where's for selected search
      *
-     * @param Builder $builder Builder
+     * @param Builder|Collection $builderOrData
      *
-     * @return Builder Builder
+     * @return Builder|Collection
      */
     protected abstract function applySearch($builderOrData);
 
     /**
      * Setts the orderBy for selected column
      *
-     * @param Builder $builder
+     * @param Builder|Collection $builderOrData
      *
-     * @return Builder
+     * @return Builder|Collection
      */
     protected abstract function applySort($builderOrData);
 
     /**
      * Sets the limit and the offset
      *
-     * @param Builder $builder
+     * @param Builder|Collection $builderOrData
      *
      * @return Builder|LengthAwarePaginator
      */

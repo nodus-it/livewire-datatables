@@ -21,11 +21,6 @@ class ArrayUserTable extends ArrayDataTable
         $this->addColumn('admin')->setDataTypeBool();
     }
 
-    protected function scopes()
-    {
-        //$this->addSimpleScope('admins');
-    }
-
     protected function buttons()
     {
         //$this->addButton('details-button', 'users.show', ['id' => ':id']);
