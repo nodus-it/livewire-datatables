@@ -164,7 +164,6 @@ abstract class ArrayDataTable extends BaseDataTable
 
                 return $show;
             });
-
         }
 
         return $builderOrData;

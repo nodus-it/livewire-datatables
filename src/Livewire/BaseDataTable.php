@@ -186,7 +186,7 @@ abstract class BaseDataTable extends Component
      * @return View
      * @throws Exception
      */
-    public abstract function render();
+    abstract public function render();
 
     /**
      * Sets the selected scopes
@@ -196,7 +196,7 @@ abstract class BaseDataTable extends Component
      * @return Builder|Collection
      * @throws Exception Scope not found in model
      */
-    protected abstract function applyScopes($builderOrData);
+    abstract protected function applyScopes($builderOrData);
 
     /**
      * Sets the where's for selected search
@@ -205,7 +205,7 @@ abstract class BaseDataTable extends Component
      *
      * @return Builder|Collection
      */
-    protected abstract function applySearch($builderOrData);
+    abstract protected function applySearch($builderOrData);
 
     /**
      * Setts the orderBy for selected column
@@ -214,7 +214,7 @@ abstract class BaseDataTable extends Component
      *
      * @return Builder|Collection
      */
-    protected abstract function applySort($builderOrData);
+    abstract protected function applySort($builderOrData);
 
     /**
      * Sets the limit and the offset
@@ -223,7 +223,7 @@ abstract class BaseDataTable extends Component
      *
      * @return Builder|LengthAwarePaginator
      */
-    protected abstract function applyPagination($builderOrData);
+    abstract protected function applyPagination($builderOrData);
 
 
     /**
@@ -363,9 +363,9 @@ CSS;
     /**
      * Read recent table meta data from session
      *
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @return bool
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     protected function readSessionMetaData(): bool
     {
@@ -374,11 +374,11 @@ CSS;
         }
 
         $meta = session()->get($this->getSessionMetaDataKey());
-        $this->paginate = $meta[ 'paginate' ];
-        $this->sort = $meta[ 'sort' ];
-        $this->sortDirection = $meta[ 'sortDirection' ];
-        $this->simpleScope = $meta[ 'simpleScope' ];
-        $this->search = $meta[ 'search' ];
+        $this->paginate = $meta['paginate'];
+        $this->sort = $meta['sort'];
+        $this->sortDirection = $meta['sortDirection'];
+        $this->simpleScope = $meta['simpleScope'];
+        $this->search = $meta['search'];
 
         return true;
     }
@@ -425,7 +425,7 @@ CSS;
         $column = new $this->columnClass($values, $label);
         $column->checkForAutoDisableSortAndSearch($this->resultModel ?? null);
 
-        $this->columns[ $column->getId() ] = $column;
+        $this->columns[$column->getId()] = $column;
 
         return $column;
     }
@@ -456,7 +456,7 @@ CSS;
 
         $simpleScope = new $this->simpleScopeClass($scope, $label);
 
-        $this->simpleScopes[ $simpleScope->getId() ] = $simpleScope;
+        $this->simpleScopes[$simpleScope->getId()] = $simpleScope;
 
         return $simpleScope;
     }
