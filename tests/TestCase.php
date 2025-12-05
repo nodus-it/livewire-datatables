@@ -2,22 +2,27 @@
 
 namespace Nodus\Packages\LivewireDatatables\Tests;
 
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Livewire\LivewireServiceProvider;
 use Nodus\Packages\LivewireDatatables\LivewireDatatablesServiceProvider;
-use Orchestra\Testbench\Attributes\WithMigration;
 
-#[WithMigration]
 class TestCase extends \Orchestra\Testbench\TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @throws Exception
+     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__ . '/Data/Database/Factories');
+        $this->loadFactoriesUsing(
+            $this->app,
+            __DIR__ . '/Data/Database/Factories'
+        );
 
         /**
          * Fake Routes

@@ -11,7 +11,9 @@
 |
 */
 
-uses(\Nodus\Packages\LivewireDatatables\Tests\TestCase::class)->in('');
+use Nodus\Packages\LivewireDatatables\Tests\TestCase;
+
+uses(TestCase::class)->in('Unit');
 
 /*
 |--------------------------------------------------------------------------
