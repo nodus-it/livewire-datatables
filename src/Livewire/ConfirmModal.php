@@ -20,7 +20,7 @@ class ConfirmModal extends Component
     public bool $isOpen = false;
 
     /**
-     * URL which will be called after confirmation
+     * URL, which will be called after confirmation
      *
      * @var string
      */

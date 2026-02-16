@@ -61,7 +61,7 @@ abstract class ArrayDataTable extends BaseDataTable
     }
 
     /**
-     * Returns the raw data as collection
+     * Returns the raw data as a collection
      *
      * @return Collection
      */

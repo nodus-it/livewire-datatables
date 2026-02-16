@@ -7,7 +7,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -33,7 +32,7 @@ abstract class BaseDataTable extends Component
     /**
      * Session key constants
      */
-    public const SESSION_KEY_META_DATA = 'nodus-it.datatables.meta';
+    public const string SESSION_KEY_META_DATA = 'nodus-it.datatables.meta';
 
     /**
      * The Column class to be used in the addColumn method
@@ -141,7 +140,7 @@ abstract class BaseDataTable extends Component
     public bool $showSearch = true;
 
     /**
-     * Flag to enable/disable the counter UI widget
+     * Flag to enable/disable the Counter UI-widget
      *
      * @var bool
      */
@@ -190,7 +189,7 @@ abstract class BaseDataTable extends Component
      * @param Builder|Collection $builderOrData
      *
      * @return Builder|Collection
-     * @throws Exception Scope not found in model
+     * @throws Exception Scope wasn't found for the model
      */
     abstract protected function applyScopes($builderOrData);
 
@@ -399,7 +398,7 @@ CSS;
      *
      * @return Column
      */
-    protected function addColumn(array|Closure|string $values, string $label = null)
+    protected function addColumn(array|Closure|string $values, ?string $label = null)
     {
         if ($label == null) {
             if ($values instanceof Closure) {
@@ -444,7 +443,7 @@ CSS;
      *
      * @return SimpleScope
      */
-    protected function addSimpleScope(string $scope, string $label = null)
+    protected function addSimpleScope(string $scope, ?string $label = null)
     {
         if ($label == null) {
             $label = $this->getTranslationStringByModel('scopes.simple.' . $scope);
