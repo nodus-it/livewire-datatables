@@ -19,10 +19,10 @@ class Column
     /**
      * Default breakpoint constants
      */
-    public const BREAKPOINT_400 = 400;
-    public const BREAKPOINT_600 = 600;
-    public const BREAKPOINT_750 = 750;
-    public const BREAKPOINT_1000 = 1000;
+    public const int BREAKPOINT_400 = 400;
+    public const int BREAKPOINT_600 = 600;
+    public const int BREAKPOINT_750 = 750;
+    public const int BREAKPOINT_1000 = 1000;
 
     /**
      * Column Identifier
@@ -148,7 +148,7 @@ class Column
     }
 
     /**
-     * Checks if the sort and search handling needs to be auto disabled for that column as default
+     * Checks if the sort and search handling needs to be auto-disabled for that column as default
      *
      * @param string|null $model
      *
@@ -168,9 +168,9 @@ class Column
     }
 
     /**
-     * Sets the html flag
+     * Sets the HTML flag
      *
-     * @param bool $html Allow html
+     * @param bool $html Allow HTML
      *
      * @return Column
      */
@@ -278,7 +278,7 @@ class Column
     }
 
     /**
-     * Returns the html flag
+     * Returns the HTML flag
      *
      * @return bool
      */
@@ -413,7 +413,7 @@ class Column
      */
 
     /**
-     * Marks this column as data type 'date'
+     * Sets this column to the data type 'date'
      *
      * @return Column
      */
@@ -425,7 +425,7 @@ class Column
     }
 
     /**
-     * Marks this column as data type 'datetime'
+     * Sets this column to the data type 'datetime'
      *
      * @return Column
      */
@@ -437,7 +437,7 @@ class Column
     }
 
     /**
-     * Marks this column as data type 'time'
+     * Sets this column to the data type 'time'
      *
      * @return Column
      */
@@ -449,7 +449,7 @@ class Column
     }
 
     /**
-     * Marks this column as data type 'bool'
+     * Sets this column to the data type 'bool'
      *
      * @return Column
      */
@@ -462,7 +462,7 @@ class Column
     }
 
     /**
-     * Marks this column as the given data type
+     * Sets this column to the given data type
      *
      * @param string $dataType
      *
@@ -497,7 +497,7 @@ class Column
     }
 
     /**
-     * Adds a custom data type to column class
+     * Adds a custom data type to the column class
      *
      * @param string  $name    Name
      * @param Closure $closure Custom Data Type Closure

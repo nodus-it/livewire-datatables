@@ -39,7 +39,7 @@ abstract class DataTable extends BaseDataTable
     public array $resultWith = [];
 
     /**
-     * Removed global scopes of the result (e.g. SoftDelete)
+     * Removed global scopes of the result (e.g., SoftDelete)
      *
      * @var array
      */
@@ -121,6 +121,7 @@ abstract class DataTable extends BaseDataTable
     public function render()
     {
         $this->columns();
+
         if (method_exists($this, 'scopes')) {
             $this->scopes();
         }
@@ -138,54 +139,51 @@ abstract class DataTable extends BaseDataTable
 
         $this->writeSessionMetaData();
 
-        return view(
-            $themePath . '.datatable',
-            [
-                'results'      => $paginator,
-                'columns'      => $this->columns,
-                'simpleScopes' => $this->simpleScopes,
-                'buttons'      => $this->buttons,
-                'themePath'    => $themePath,
-                'show'         => (object)[
-                    'scopes'     => $this->showSimpleScopes,
-                    'search'     => $this->showSearch,
-                    'counter'    => $this->showCounter,
-                    'pagination' => $this->showPagination,
-                    'pageLength' => $this->showPageLength,
-                ]
+        return view($themePath . '.datatable', [
+            'results'      => $paginator,
+            'columns'      => $this->columns,
+            'simpleScopes' => $this->simpleScopes,
+            'buttons'      => $this->buttons,
+            'themePath'    => $themePath,
+            'show'         => (object)[
+                'scopes'     => $this->showSimpleScopes,
+                'search'     => $this->showSearch,
+                'counter'    => $this->showCounter,
+                'pagination' => $this->showPagination,
+                'pageLength' => $this->showPageLength,
             ]
-        );
+        ]);
     }
 
     /**
      * Sets the selected scopes
      *
-     * @param Builder $builder Builder
+     * @param Builder $builderOrData Builder
      *
      * @return Builder Builder
-     * @throws Exception Scope not found in model
+     * @throws Exception Scope wasn't found for the model
      */
-    protected function applyScopes($builder)
+    protected function applyScopes($builderOrData)
     {
         if ($this->simpleScope != '') {
-            $builder = $this->simpleScopes[$this->simpleScope]->addScope($builder);
+            $builderOrData = $this->simpleScopes[$this->simpleScope]->addScope($builderOrData);
         }
 
-        return $builder;
+        return $builderOrData;
     }
 
     /**
      * Sets the where's for selected search
      *
-     * @param Builder $builder Builder
+     * @param Builder $builderOrData Builder
      *
      * @return Builder Builder
      */
-    protected function applySearch($builder)
+    protected function applySearch($builderOrData)
     {
         if (!empty($this->search)) {
-            $builder->where(
-                function (Builder $builder) {
+            $builderOrData->where(
+                function (Builder $builderOrData) {
                     $searchTokens = $this->getSearchTokens();
 
                     foreach ($this->columns as $column) {
@@ -197,7 +195,7 @@ abstract class DataTable extends BaseDataTable
                             if (Str::contains($searchKey, '.')) {
                                 // Relation table search
                                 [$relation, $relationSearchKey] = explode('.', $searchKey, 2);
-                                $builder->orWhereHas(
+                                $builderOrData->orWhereHas(
                                     $relation,
                                     function (Builder $b) use ($relationSearchKey, $searchTokens) {
                                         foreach ($searchTokens as $token) {
@@ -208,7 +206,7 @@ abstract class DataTable extends BaseDataTable
                             } else {
                                 // Base table search
                                 foreach ($searchTokens as $token) {
-                                    $builder->orWhere($searchKey, 'LIKE', '%' . $token . '%');
+                                    $builderOrData->orWhere($searchKey, 'LIKE', '%' . $token . '%');
                                 }
                             }
                         }
@@ -217,47 +215,49 @@ abstract class DataTable extends BaseDataTable
             );
         }
 
-        return $builder;
+        return $builderOrData;
     }
 
     /**
      * Setts the orderBy for selected column
      *
-     * @param Builder $builder
+     * @param Builder $builderOrData
      *
      * @return Builder
      */
-    protected function applySort($builder)
+    protected function applySort($builderOrData)
     {
         // Sort by default by id
         if ($this->sort === null) {
-            return $builder->orderBy($this->prefixCol('id'), $this->sortDirection);
+            return $builderOrData->orderBy($this->prefixCol('id'), $this->sortDirection);
         }
 
-        // if the sort key isn't a column use it directly for sorting
+        // if the sort key isn't a column, use it directly for sorting
         if (!isset($this->columns[$this->sort])) {
-            return $builder->orderBy($this->sort, $this->sortDirection);
+            return $builderOrData->orderBy($this->sort, $this->sortDirection);
         }
 
         // if the sort key matches a column than use the columns sort keys
         foreach ($this->columns[$this->sort]->getSortKeys() as $sort) {
             if (!Str::contains($sort, '.')) {
-                $builder->orderBy($sort, $this->sortDirection);
+                $builderOrData->orderBy($sort, $this->sortDirection);
             }
         }
 
-        return $builder;
+        return $builderOrData;
     }
 
     /**
      * Sets the limit and the offset
      *
-     * @param Builder $builder
+     * @param Builder $builderOrData
      *
      * @return Builder|LengthAwarePaginator
      */
-    protected function applyPagination($builder)
+    protected function applyPagination($builderOrData)
     {
-        return $builder->paginate($this->paginate)->onEachSide($this->paginateOnEachSide);
+        return $builderOrData
+            ->paginate($this->paginate)
+            ->onEachSide($this->paginateOnEachSide);
     }
 }

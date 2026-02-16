@@ -17,9 +17,9 @@ class Button
     /**
      * Render mode constants
      */
-    public const RENDER_MODE_LABEL = 1;
-    public const RENDER_MODE_ICON = 2;
-    public const RENDER_MODE_ICON_LABEL = 3;
+    public const int RENDER_MODE_LABEL = 1;
+    public const int RENDER_MODE_ICON = 2;
+    public const int RENDER_MODE_ICON_LABEL = 3;
 
     /**
      * Button identifier
@@ -121,7 +121,7 @@ class Button
     }
 
     /**
-     * Sets an icon for button and choose the render mode
+     * Sets an icon for the button and choose the render mode
      *
      * @param string $icon
      * @param bool   $showIconOnly
@@ -137,7 +137,7 @@ class Button
     }
 
     /**
-     * Sets the custom classes for button
+     * Sets the custom classes for the button
      *
      * @param array|string $classes
      *
@@ -151,7 +151,7 @@ class Button
     }
 
     /**
-     * Defines the current button as confirmation button and sets the related parameters
+     * Defines the current button as a confirmation button and sets the related parameters
      *
      * @param string|null $text    Confirmation modal text
      * @param string|null $title   Confirmation modal title
@@ -161,31 +161,36 @@ class Button
      *
      * @return static
      */
-    public function setConfirmation(string $text = null, string $title = null, string $confirm = null, string $cancel = null, string $context = null): static
-    {
+    public function setConfirmation(
+        ?string $text = null,
+        ?string $title = null,
+        ?string $confirm = null,
+        ?string $cancel = null,
+        ?string $context = null
+    ): static {
         // todo refactoring: maybe use extra ConfirmButton class instead
         $this->confirmation = [
             'enable' => true,
         ];
 
         if ($text !== null) {
-            $this->confirmation[ 'text' ] = $text;
+            $this->confirmation['text'] = $text;
         }
 
         if ($title !== null) {
-            $this->confirmation[ 'title' ] = $title;
+            $this->confirmation['title'] = $title;
         }
 
         if ($confirm !== null) {
-            $this->confirmation[ 'confirm' ] = $confirm;
+            $this->confirmation['confirm'] = $confirm;
         }
 
         if ($cancel !== null) {
-            $this->confirmation[ 'cancel' ] = $cancel;
+            $this->confirmation['cancel'] = $cancel;
         }
 
         if ($context !== null) {
-            $this->confirmation[ 'context' ] = $context;
+            $this->confirmation['context'] = $context;
         }
 
         return $this;
