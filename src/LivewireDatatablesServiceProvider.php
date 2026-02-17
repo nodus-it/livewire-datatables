@@ -5,7 +5,6 @@ namespace Nodus\Packages\LivewireDatatables;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Nodus\Packages\LivewireCore\Services\CspNonce;
 use Nodus\Packages\LivewireDatatables\Livewire\ConfirmModal;
 use Nodus\Packages\LivewireCore\Services\SupportsComponentAssets;
 use Nodus\Packages\LivewireDatatables\Livewire\DataTable;
@@ -52,7 +51,11 @@ class LivewireDatatablesServiceProvider extends ServiceProvider
     private function registerBladeDirectives()
     {
         Blade::directive('livewireDatatableStyles', function () {
-            return "<style " . app(CspNonce::class)->toHtml() . ">\n" . $this->styles() . "\n</style>";
+            $stylesPhp = var_export($this->styles(), true);
+
+            return "<?php echo '<style '"
+                   . " . app('Nodus\\\\Packages\\\\LivewireCore\\\\Services\\\\CspNonce')->toHtml()"
+                   . " . \">\\n\" . {$stylesPhp} . \"\\n</style>\"; ?>";
         });
     }
 }
