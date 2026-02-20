@@ -20,7 +20,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                     @foreach($results as $result)
-                        <tr class="bg-white">
+                        <tr class="bg-white" wire:key="{{ $result->getKey() }}">
                             @foreach($columns as $column)
                                 @if($column->isHtmlEnabled())
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-cool-gray-900">{!! $column->getValues($result) !!}</td>

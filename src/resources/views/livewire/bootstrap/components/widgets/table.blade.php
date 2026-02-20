@@ -22,7 +22,7 @@
         </thead>
         <tbody>
         @foreach($results as $result)
-            <tr>
+            <tr wire:key="{{ $result->getKey() }}">
                 @foreach($columns as $column)
                     @if($column->isHtmlEnabled())
                         <td class="align-middle {{$column->getClasses()}}">{!! $column->getValues($result) !!}</td>
